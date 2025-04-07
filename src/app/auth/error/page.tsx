@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { SparklesCore } from "@/components/ui/aceternity/sparkles";
@@ -118,9 +118,28 @@ const AuthErrorContent = () => {
   );
 };
 
-// Main page component
+// Loading fallback component
+const LoadingFallback = () => {
+  return (
+    <div className="flex flex-col min-h-screen bg-black text-white">
+      <Navbar />
+      <div className="container mx-auto px-6 py-24 relative z-10 flex-grow flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-xl text-gray-300">Loading...</p>
+        </div>
+      </div>
+      <Footer />
+    </div>
+  );
+};
+
+// Main page component with Suspense boundary
 const AuthErrorPage = () => {
-  return <AuthErrorContent />;
+  return (
+    <Suspense fallback={<LoadingFallback />}>
+      <AuthErrorContent />
+    </Suspense>
+  );
 };
 
 export default AuthErrorPage;
