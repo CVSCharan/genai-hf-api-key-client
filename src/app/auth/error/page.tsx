@@ -9,7 +9,8 @@ import { Footer } from "@/components/layout/Footer";
 import { XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const AuthErrorPage = () => {
+// Client component that safely uses useSearchParams
+const AuthErrorContent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [countdown, setCountdown] = useState(5);
@@ -115,6 +116,11 @@ const AuthErrorPage = () => {
       <Footer />
     </div>
   );
+};
+
+// Main page component
+const AuthErrorPage = () => {
+  return <AuthErrorContent />;
 };
 
 export default AuthErrorPage;

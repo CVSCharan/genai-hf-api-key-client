@@ -9,7 +9,8 @@ import { Footer } from "@/components/layout/Footer";
 import { CheckCircle } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 
-const AuthSuccessPage = () => {
+// Client component that safely uses useSearchParams
+const AuthSuccessContent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [countdown, setCountdown] = useState(3);
@@ -31,29 +32,29 @@ const AuthSuccessPage = () => {
     // Get token from URL
     const token = searchParams.get("token");
     console.log("Token from URL:", token);
-    
+
     let timer: NodeJS.Timeout | null = null;
-    
+
     // Check if we're in the browser and try to get from window.location if searchParams fails
-    if (typeof window !== 'undefined' && !token) {
+    if (typeof window !== "undefined" && !token) {
       const urlParams = new URLSearchParams(window.location.search);
       const tokenFromUrl = urlParams.get("token");
       console.log("Token from window.location:", tokenFromUrl);
-      
+
       if (tokenFromUrl) {
         // Try to decode the JWT to get user info
         try {
-          const payload = JSON.parse(atob(tokenFromUrl.split('.')[1]));
+          const payload = JSON.parse(atob(tokenFromUrl.split(".")[1]));
           const user = {
             id: payload.id || payload.sub,
             email: payload.email,
             name: payload.name,
-            picture: payload.picture
+            picture: payload.picture,
           };
-          
+
           // Save to auth context
           login(tokenFromUrl, user);
-          
+
           // Start countdown to redirect
           timer = setInterval(() => {
             setCountdown((prev) => {
@@ -71,10 +72,10 @@ const AuthSuccessPage = () => {
           const mockUser = {
             id: "mock-id",
             email: "user@example.com",
-            name: "Test User"
+            name: "Test User",
           };
           login(tokenFromUrl, mockUser);
-          
+
           timer = setInterval(() => {
             setCountdown((prev) => {
               if (prev <= 1) {
@@ -93,10 +94,10 @@ const AuthSuccessPage = () => {
         const mockUser = {
           id: "mock-id",
           email: "user@example.com",
-          name: "Test User"
+          name: "Test User",
         };
         login(mockToken, mockUser);
-        
+
         timer = setInterval(() => {
           setCountdown((prev) => {
             if (prev <= 1) {
@@ -111,14 +112,14 @@ const AuthSuccessPage = () => {
     } else if (token) {
       // Try to decode the JWT to get user info
       try {
-        const payload = JSON.parse(atob(token.split('.')[1]));
+        const payload = JSON.parse(atob(token.split(".")[1]));
         const user = {
           id: payload.id || payload.sub,
           email: payload.email,
           name: payload.name,
-          picture: payload.picture
+          picture: payload.picture,
         };
-        
+
         // Save to auth context
         login(token, user);
 
@@ -139,10 +140,10 @@ const AuthSuccessPage = () => {
         const mockUser = {
           id: "mock-id",
           email: "user@example.com",
-          name: "Test User"
+          name: "Test User",
         };
         login(token, mockUser);
-        
+
         timer = setInterval(() => {
           setCountdown((prev) => {
             if (prev <= 1) {
@@ -210,6 +211,11 @@ const AuthSuccessPage = () => {
       <Footer />
     </div>
   );
+};
+
+// Main page component
+const AuthSuccessPage = () => {
+  return <AuthSuccessContent />;
 };
 
 export default AuthSuccessPage;
