@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { Suspense, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { BackgroundGradient } from "@/components/ui/aceternity/background-gradient";
 import { SparklesCore } from "@/components/ui/aceternity/sparkles";
@@ -15,7 +15,8 @@ import { useSearchParams } from "next/navigation";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { CheckCircle2 } from "lucide-react";
 
-const LoginPage = () => {
+// Client component that safely uses useSearchParams
+const LoginPageContent = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -361,6 +362,30 @@ const LoginPage = () => {
 
       <Footer />
     </div>
+  );
+};
+
+// Loading fallback component
+const LoadingFallback = () => {
+  return (
+    <div className="flex flex-col min-h-screen bg-black text-white">
+      <Navbar />
+      <div className="container mx-auto px-6 py-24 relative z-10 flex-grow flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-xl text-gray-300">Loading...</p>
+        </div>
+      </div>
+      <Footer />
+    </div>
+  );
+};
+
+// Main page component
+const LoginPage = () => {
+  return (
+    <Suspense fallback={<LoadingFallback />}>
+      <LoginPageContent />;
+    </Suspense>
   );
 };
 
