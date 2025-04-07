@@ -94,8 +94,7 @@ export type SparklesCoreProps = {
   particleDensity?: number;
 };
 
-export interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {}
+// Replace empty interfaces with type aliases
+export type InputProps = React.InputHTMLAttributes<HTMLInputElement>;
 
-export interface TextareaProps
-  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {}
+export type TextareaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement>;

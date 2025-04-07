@@ -66,10 +66,10 @@ const AddTestimonialsPage = () => {
         position: "",
         company: "",
       });
-    } catch (_) {
+    } catch (error) {
       setSubmitStatus({
         success: false,
-        message: "There was an error submitting your testimonial. Please try again.",
+        message: `There was an error submitting your testimonial - ${error instanceof Error ? error.message : 'Unknown error'}`,
       });
     } finally {
       setIsSubmitting(false);
