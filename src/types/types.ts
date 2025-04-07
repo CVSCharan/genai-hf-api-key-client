@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 // Define the user type
 export interface User {
   id: string;
@@ -28,3 +30,55 @@ export type Testimonial = {
   position?: string;
   company?: string;
 };
+
+export interface TourStepProps {
+  step: number;
+  title: string;
+  description: string;
+  position?: "top" | "bottom" | "left" | "right";
+  onClose: (skipAll?: boolean) => void;
+}
+
+export interface HeroSectionProps {
+  apiKey: string;
+  setApiKey: (value: string) => void;
+  isModalOpen: boolean;
+  setIsModalOpen: (value: boolean) => void;
+  handleSubmit: (e: React.FormEvent) => void;
+}
+
+export interface FeatureItem {
+  title: string;
+  description: string;
+  icon: React.ReactNode;
+}
+
+export interface TechItem {
+  title: string;
+  description: string;
+  icon: React.ReactNode;
+}
+
+export interface StepItem {
+  number: string;
+  title: string;
+  description: string;
+}
+
+export interface CTASectionProps {
+  apiKey: string;
+  setApiKey: (value: string) => void;
+  handleSubmit: (e: React.FormEvent) => void;
+}
+
+export interface NavItem {
+  id: string;
+  title: string;
+  icon: ReactNode;
+  children?: { id: string; title: string }[];
+}
+
+export interface DocSection {
+  title: string;
+  content: ReactNode;
+}

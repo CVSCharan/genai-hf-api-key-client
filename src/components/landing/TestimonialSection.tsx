@@ -155,44 +155,44 @@ export const TestimonialSection = () => {
             >
               {getCurrentTestimonials().map((testimonial, index) => (
                 <div key={testimonial._id} className="h-full flex">
-                  <BackgroundGradient className="rounded-xl p-[1px] h-full w-full">
-                    <div className="bg-gray-900 p-6 rounded-[10px] h-full flex flex-col min-h-[280px]">
-                      <div className="mb-auto">
-                        <div className="flex items-center mb-4">
-                          <div className="relative w-12 h-12 rounded-full overflow-hidden mr-4 bg-gray-800 flex-shrink-0">
-                            {testimonial.user.avatar ? (
-                              <Image
-                                src={testimonial.user.avatar}
-                                alt={testimonial.user.name}
-                                fill
-                                className="object-cover"
-                              />
-                            ) : (
-                              <div className="w-full h-full flex items-center justify-center text-xl font-bold text-white">
-                                {testimonial.user.name.charAt(0)}
-                              </div>
-                            )}
-                          </div>
-                          <div>
-                            <h3 className="font-bold text-white">
-                              {testimonial.user.name}
-                            </h3>
-                            {testimonial.position && testimonial.company && (
-                              <p className="text-sm text-gray-400">
-                                {testimonial.position} at {testimonial.company}
-                              </p>
-                            )}
-                          </div>
+                  <div className="rounded-xl bg-gradient-to-r from-purple-600/50 via-pink-500/50 to-purple-600/50 p-[1px] h-full">
+                    <div className="bg-gray-900 p-6 rounded-[10px] flex flex-col h-full">
+                      <div className="flex items-center mb-3">
+                        <div className="relative w-10 h-10 rounded-full overflow-hidden mr-3 bg-gray-800 flex-shrink-0">
+                          {testimonial.user.avatar ? (
+                            <Image
+                              src={testimonial.user.avatar}
+                              alt={testimonial.user.name}
+                              fill
+                              className="object-cover"
+                            />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center text-lg font-bold text-white">
+                              {testimonial.user.name.charAt(0)}
+                            </div>
+                          )}
                         </div>
-
-                        <div className="flex mb-4">
-                          {renderStars(testimonial.rating)}
+                        <div>
+                          <h3 className="font-bold text-white text-lg">
+                            {testimonial.user.name}
+                          </h3>
+                          {testimonial.position && testimonial.company && (
+                            <p className="text-sm text-gray-400">
+                              {testimonial.position} at {testimonial.company}
+                            </p>
+                          )}
                         </div>
                       </div>
 
-                      <p className="text-gray-300">"{testimonial.content}"</p>
+                      <div className="flex mb-3">
+                        {renderStars(testimonial.rating)}
+                      </div>
+
+                      <p className="text-gray-300 text-base flex-grow">
+                        "{testimonial.content}"
+                      </p>
                     </div>
-                  </BackgroundGradient>
+                  </div>
                 </div>
               ))}
             </motion.div>
@@ -202,7 +202,7 @@ export const TestimonialSection = () => {
           <div className="flex justify-center items-center mt-8 space-x-4">
             <button
               onClick={prevSlide}
-              className="p-2 rounded-full bg-gray-800 hover:bg-gray-700 text-white transition-colors"
+              className="cursor-pointer p-2 rounded-full bg-gray-800 hover:bg-gray-700 text-white transition-colors"
               aria-label="Previous testimonials"
             >
               <svg
@@ -226,7 +226,7 @@ export const TestimonialSection = () => {
                 <button
                   key={idx}
                   onClick={() => setCurrentIndex(idx)}
-                  className={`w-2.5 h-2.5 rounded-full transition-colors ${
+                  className={`cursor-pointer w-2.5 h-2.5 rounded-full transition-colors ${
                     currentIndex === idx
                       ? "bg-gradient-to-r from-purple-400 via-pink-500 to-red-500"
                       : "bg-gray-600 hover:bg-gray-500"
@@ -238,7 +238,7 @@ export const TestimonialSection = () => {
 
             <button
               onClick={nextSlide}
-              className="p-2 rounded-full bg-gray-800 hover:bg-gray-700 text-white transition-colors"
+              className="cursor-pointer p-2 rounded-full bg-gray-800 hover:bg-gray-700 text-white transition-colors"
               aria-label="Next testimonials"
             >
               <svg
@@ -259,7 +259,7 @@ export const TestimonialSection = () => {
 
             <button
               onClick={() => setAutoplay(!autoplay)}
-              className={`p-2 rounded-full ${
+              className={`p-2 rounded-full cursor-pointer ${
                 autoplay
                   ? "bg-purple-600 hover:bg-purple-700"
                   : "bg-gray-800 hover:bg-gray-700"

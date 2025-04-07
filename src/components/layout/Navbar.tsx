@@ -4,9 +4,11 @@ import { useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -37,24 +39,28 @@ export function Navbar() {
             >
               About
             </Link>
-            <Link
-              href="/docs"
-              className="text-gray-300 hover:text-white transition-colors"
-            >
-              Documentation
-            </Link>
+            {pathname !== "/docs" && (
+              <Link
+                href="/docs"
+                className="text-gray-300 hover:text-white transition-colors"
+              >
+                Documentation
+              </Link>
+            )}
             <Link
               href="/contact"
               className="text-gray-300 hover:text-white transition-colors"
             >
               Contact
             </Link>
-            <Link
-              href="/login"
-              className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white pt-2 pb-2 pr-4 pl-4 rounded transition-colors"
-            >
-              Login
-            </Link>
+            {pathname === "/" && (
+              <Link
+                href="/login"
+                className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white pt-2 pb-2 pr-4 pl-4 rounded transition-colors"
+              >
+                Login
+              </Link>
+            )}
           </div>
 
           {/* Mobile Menu Button */}

@@ -9,12 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-
-interface CTASectionProps {
-  apiKey: string;
-  setApiKey: (value: string) => void;
-  handleSubmit: (e: React.FormEvent) => void;
-}
+import { CTASectionProps } from "@/types/types";
 
 export function CTASection({
   apiKey,

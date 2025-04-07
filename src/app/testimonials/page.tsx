@@ -4,7 +4,6 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
-import { BackgroundGradient } from "@/components/ui/aceternity/background-gradient";
 import { SparklesCore } from "@/components/ui/aceternity/sparkles";
 import Link from "next/link";
 import Image from "next/image";
