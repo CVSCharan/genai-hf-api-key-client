@@ -111,10 +111,10 @@ const TermsPage = () => {
                   5. Disclaimer
                 </h2>
                 <p className="text-gray-300 mb-3">
-                  Your use of the service is at your sole risk. The service is
+                  {`Your use of the service is at your sole risk. The service is
                   provided on an "AS IS" and "AS AVAILABLE" basis. The service
                   is provided without warranties of any kind, whether express or
-                  implied.
+                  implied.`}
                 </p>
                 <p className="text-gray-300">
                   As this is a developer showcase project, it may contain bugs,

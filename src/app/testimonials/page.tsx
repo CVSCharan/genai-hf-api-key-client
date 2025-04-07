@@ -157,8 +157,8 @@ const TestimonialsPage = () => {
               Platform to build innovative solutions
             </p>
             <div className="mt-8">
-              <Link 
-                href="/testimonials/add" 
+              <Link
+                href="/testimonials/add"
                 className="inline-flex items-center px-8 py-3 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-medium transition-all duration-200"
               >
                 Share Your Experience
@@ -202,26 +202,27 @@ const TestimonialsPage = () => {
                         )}
                       </div>
                     </div>
-                    
+
                     <div className="flex mb-3">
                       {renderStars(testimonial.rating)}
                     </div>
-                    
+
                     <p className="text-gray-300 text-base flex-grow">
-                      "{testimonial.content}"
+                      &quot;{testimonial.content}&quot;
                     </p>
                   </div>
                 </div>
               </motion.div>
             ))}
           </div>
-          
+
           <div className="mt-16 text-center">
             <p className="text-gray-400 mb-6">
-              Join hundreds of satisfied users who have transformed their AI development with GenAI Platform
+              Join hundreds of satisfied users who have transformed their AI
+              development with GenAI Platform
             </p>
-            <Link 
-              href="/testimonials/add" 
+            <Link
+              href="/testimonials/add"
               className="inline-flex items-center px-8 py-3 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-medium transition-all duration-200"
             >
               Add Your Testimonial

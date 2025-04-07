@@ -179,7 +179,7 @@ const ContactPage = () => {
                     className="bg-green-900/30 border border-green-700 rounded-lg p-4 text-center"
                   >
                     <p className="text-green-400 font-medium">
-                      Thank you for your message! I'll get back to you soon.
+                      {`Thank you for your message! I'll get back to you soon.`}
                     </p>
                   </motion.div>
                 ) : (

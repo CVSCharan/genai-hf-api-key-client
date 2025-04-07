@@ -1,19 +1,9 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
-import type { Container, SingleOrMultiple } from "@tsparticles/engine";
+import type { Container } from "@tsparticles/engine";
 import { loadSlim } from "@tsparticles/slim";
-
-type SparklesCoreProps = {
-  id?: string;
-  className?: string;
-  background?: string;
-  minSize?: number;
-  maxSize?: number;
-  speed?: number;
-  particleColor?: string;
-  particleDensity?: number;
-};
+import { SparklesCoreProps } from "@/types/types";
 
 export const SparklesCore = (props: SparklesCoreProps) => {
   const {
@@ -67,7 +57,9 @@ export const SparklesCore = (props: SparklesCoreProps) => {
                 enable: true,
                 mode: "repulse",
               },
-              resize: true as any,
+              resize: {
+                enable: true,
+              },
             },
             modes: {
               push: {

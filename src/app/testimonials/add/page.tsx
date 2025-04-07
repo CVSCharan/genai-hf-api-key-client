@@ -11,7 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { StarIcon } from "lucide-react";
+
 
 const AddTestimonialsPage = () => {
   const [formData, setFormData] = useState({
@@ -66,7 +66,7 @@ const AddTestimonialsPage = () => {
         position: "",
         company: "",
       });
-    } catch (error) {
+    } catch (_) {
       setSubmitStatus({
         success: false,
         message: "There was an error submitting your testimonial. Please try again.",

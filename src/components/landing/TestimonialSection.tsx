@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { BackgroundGradient } from "@/components/ui/aceternity/background-gradient";
 import Image from "next/image";
 import { Testimonial } from "@/types/types";
 
@@ -153,7 +152,7 @@ export const TestimonialSection = () => {
               transition={{ duration: 0.5 }}
               className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8"
             >
-              {getCurrentTestimonials().map((testimonial, index) => (
+              {getCurrentTestimonials().map((testimonial) => (
                 <div key={testimonial._id} className="h-full flex">
                   <div className="rounded-xl bg-gradient-to-r from-purple-600/50 via-pink-500/50 to-purple-600/50 p-[1px] h-full">
                     <div className="bg-gray-900 p-6 rounded-[10px] flex flex-col h-full">
@@ -189,7 +188,7 @@ export const TestimonialSection = () => {
                       </div>
 
                       <p className="text-gray-300 text-base flex-grow">
-                        "{testimonial.content}"
+                        &quot;{testimonial.content}&quot;
                       </p>
                     </div>
                   </div>

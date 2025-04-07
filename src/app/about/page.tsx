@@ -108,11 +108,11 @@ const AboutPage = () => {
                   Who I Am
                 </h2>
                 <p className="text-gray-300 mb-4">
-                  I'm CVS Charan, a passionate Full Stack Developer with
+                  {`I'm CVS Charan, a passionate Full Stack Developer with
                   expertise in building modern web applications and AI-powered
                   solutions. With a strong foundation in both frontend and
                   backend technologies, I create seamless digital experiences
-                  that solve real-world problems.
+                  that solve real-world problems.`}
                 </p>
                 <p className="text-gray-300">
                   My journey in tech has been driven by curiosity and a desire

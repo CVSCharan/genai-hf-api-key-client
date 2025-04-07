@@ -27,12 +27,14 @@ export function Navbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <Link
-              href="/"
-              className="text-gray-300 hover:text-white transition-colors"
-            >
-              Home
-            </Link>
+            {pathname !== "/" && (
+              <Link
+                href="/"
+                className="text-gray-300 hover:text-white transition-colors"
+              >
+                Home
+              </Link>
+            )}
             <Link
               href="/about"
               className="text-gray-300 hover:text-white transition-colors"
@@ -47,12 +49,14 @@ export function Navbar() {
                 Documentation
               </Link>
             )}
-            <Link
-              href="/contact"
-              className="text-gray-300 hover:text-white transition-colors"
-            >
-              Contact
-            </Link>
+            {pathname !== "/contact" && (
+              <Link
+                href="/contact"
+                className="text-gray-300 hover:text-white transition-colors"
+              >
+                Contact
+              </Link>
+            )}
             {pathname === "/" && (
               <Link
                 href="/login"
@@ -67,7 +71,7 @@ export function Navbar() {
           <div className="md:hidden">
             <button
               onClick={toggleMenu}
-              className="text-gray-300 hover:text-white focus:outline-none"
+              className="text-gray-300 hover:text-white focus:outline-none cursor-pointer"
             >
               {isMenuOpen ? (
                 <X className="h-6 w-6" />
@@ -81,39 +85,49 @@ export function Navbar() {
         {/* Mobile Navigation */}
         {isMenuOpen && (
           <div className="md:hidden mt-4 pb-4 space-y-4">
-            <Link
-              href="/"
-              className="block text-gray-300 hover:text-white transition-colors py-2"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Home
-            </Link>
-            <Link
-              href="/features"
-              className="block text-gray-300 hover:text-white transition-colors py-2"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Features
-            </Link>
-            <Link
-              href="/docs"
-              className="block text-gray-300 hover:text-white transition-colors py-2"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Documentation
-            </Link>
-            <Link
-              href="/about"
-              className="block text-gray-300 hover:text-white transition-colors py-2"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              About
-            </Link>
-            <Link href="/login" onClick={() => setIsMenuOpen(false)}>
-              <Button className="block bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white">
-                Login
-              </Button>
-            </Link>
+            {pathname !== "/" && (
+              <Link
+                href="/"
+                className="block text-gray-300 hover:text-white transition-colors py-2"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Home
+              </Link>
+            )}
+            {pathname !== "/about" && (
+              <Link
+                href="/about"
+                className="block text-gray-300 hover:text-white transition-colors py-2"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                About
+              </Link>
+            )}
+            {pathname !== "/docs" && (
+              <Link
+                href="/docs"
+                className="block text-gray-300 hover:text-white transition-colors py-2"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Documentation
+              </Link>
+            )}
+            {pathname !== "/contact" && (
+              <Link
+                href="/contact"
+                className="block text-gray-300 hover:text-white transition-colors py-2"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Contact
+              </Link>
+            )}
+            {pathname === "/" && (
+              <Link href="/login" onClick={() => setIsMenuOpen(false)}>
+                <Button className="block bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white">
+                  Login
+                </Button>
+              </Link>
+            )}
           </div>
         )}
       </div>

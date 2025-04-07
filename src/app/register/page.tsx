@@ -43,6 +43,7 @@ const RegisterPage = () => {
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    setErrorMessage(null); // Clear any previous error messages
 
     // Validate passwords match
     if (formData.password !== formData.confirmPassword) {
@@ -76,9 +77,20 @@ const RegisterPage = () => {
       // Registration successful
       console.log("Registration successful:", data);
 
-      // Redirect to login page or dashboard
-      window.location.href =
-        "/login?message=Registration successful! Please log in.";
+      // Set success message
+      setSuccessMessage(
+        "Registration successful! Redirecting to login page..."
+      );
+      setShowAlert(true);
+
+      // Clear form data
+      setFormData({ name: "", email: "", password: "", confirmPassword: "" });
+
+      // Redirect after a short delay to show the success message
+      setTimeout(() => {
+        window.location.href =
+          "/login?message=Registration successful! Please log in.";
+      }, 2000);
     } catch (error) {
       console.error("Registration error:", error);
       setErrorMessage(
@@ -132,6 +144,44 @@ const RegisterPage = () => {
           transition={{ duration: 0.8 }}
           className="w-full max-w-md"
         >
+          {/* Success message alert */}
+          {successMessage && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="mb-6"
+            >
+              {showAlert && (
+                <Alert
+                  autoClose={true}
+                  autoCloseTime={5000}
+                  onClose={() => setShowAlert(false)}
+                  variant="success"
+                  className="flex items-center bg-green-900/20 border border-green-800 text-green-300"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="h-5 w-5 text-green-400 flex-shrink-0"
+                  >
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                  </svg>
+                  <AlertDescription className="ml-2">
+                    {successMessage}
+                  </AlertDescription>
+                </Alert>
+              )}
+            </motion.div>
+          )}
+
+          {/* Error message alert */}
           {errorMessage && (
             <motion.div
               initial={{ opacity: 0, y: -10 }}

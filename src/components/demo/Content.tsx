@@ -196,8 +196,8 @@ const DemoContent = () => {
                 </label>
                 <Select
                   value={modelCategory}
-                  onValueChange={(value: any) => {
-                    setModelCategory(value);
+                  onValueChange={(value: string) => {
+                    setModelCategory(value as "creative" | "sentiment" | "conversation");
                     setSelectedModel("");
                     if (tourStep === 2) nextTourStep();
                   }}

@@ -82,3 +82,20 @@ export interface DocSection {
   title: string;
   content: ReactNode;
 }
+
+export type SparklesCoreProps = {
+  id?: string;
+  className?: string;
+  background?: string;
+  minSize?: number;
+  maxSize?: number;
+  speed?: number;
+  particleColor?: string;
+  particleDensity?: number;
+};
+
+export interface InputProps
+  extends React.InputHTMLAttributes<HTMLInputElement> {}
+
+export interface TextareaProps
+  extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {}

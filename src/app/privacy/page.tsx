@@ -131,10 +131,10 @@ const PrivacyPage = () => {
                   5. Third-Party Services
                 </h2>
                 <p className="text-gray-300 mb-3">
-                  Our service may contain links to other sites that are not
+                  {`Our service may contain links to other sites that are not
                   operated by us. If you click on a third-party link, you will
                   be directed to that third party's site. We strongly advise you
-                  to review the Privacy Policy of every site you visit.
+                  to review the Privacy Policy of every site you visit.`}
                 </p>
                 <p className="text-gray-300">
                   We have no control over and assume no responsibility for the
