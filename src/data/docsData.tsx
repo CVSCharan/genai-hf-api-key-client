@@ -1,7 +1,7 @@
 import React from "react";
 import { ExternalLink } from "lucide-react";
 import { NavItem, DocSection } from "@/types/types";
-import { BookOpen, Cpu, Github, Info, Key, Code } from "lucide-react";
+import { BookOpen, Cpu, Github } from "lucide-react";
 
 // Navigation items for the aside with nested structure
 export const navItems: NavItem[] = [
@@ -41,8 +41,8 @@ export const docSections: Record<string, DocSection> = {
     content: (
       <>
         <p className="text-gray-300 mb-4">
-          GenAI API Key Client provides a seamless interface to interact with
-          powerful AI models through the Hugging Face API. Here's how it works:
+          {`GenAI API Key Client provides a seamless interface to interact with
+          powerful AI models through the Hugging Face API. Here's how it works:`}
         </p>
         <ol className="list-decimal pl-5 space-y-3 text-gray-300">
           <li>
@@ -71,8 +71,8 @@ export const docSections: Record<string, DocSection> = {
     content: (
       <>
         <p className="text-gray-300 mb-4">
-          To use this application, you'll need a Hugging Face API key. Follow
-          these steps to obtain one:
+          {`To use this application, you'll need a Hugging Face API key. Follow
+          these steps to obtain one:`}
         </p>
         <ol className="list-decimal pl-5 space-y-3 text-gray-300">
           <li>
@@ -93,12 +93,12 @@ export const docSections: Record<string, DocSection> = {
           <li>
             <strong className="text-white">Access Your Profile</strong> - Once
             logged in, click on your profile picture in the top right corner and
-            select "Settings".
+            select &quot;Settings&quot;.
           </li>
           <li>
             <strong className="text-white">Generate an API Key</strong> - In the
-            settings page, navigate to the "Access Tokens" section and click
-            "New Token".
+            settings page, navigate to the &quot;Access Tokens&quot; section and
+            click &quot;New Token&quot;.
           </li>
           <li>
             <strong className="text-white">Set Permissions</strong> - Give your
@@ -107,15 +107,16 @@ export const docSections: Record<string, DocSection> = {
           </li>
           <li>
             <strong className="text-white">Copy Your API Key</strong> - After
-            generating the token, copy it and store it securely. You'll need
-            this to use in the application.
+            generating the token, copy it and store it securely. You&apos;ll
+            need this to use in the application.
           </li>
         </ol>
         <div className="bg-gray-800/80 p-4 rounded-md mt-4 border border-gray-700/60">
           <p className="text-yellow-300 text-sm">
             <strong>Important:</strong> Keep your API key secure and never share
-            it publicly. The application stores your key only in your browser's
-            local storage and never transmits it to any third parties.
+            it publicly. The application stores your key only in your
+            browser&apos;s local storage and never transmits it to any third
+            parties.
           </p>
         </div>
       </>
@@ -227,8 +228,8 @@ export const docSections: Record<string, DocSection> = {
     content: (
       <>
         <p className="text-gray-300 mb-4">
-          Contributions to the GenAI API Key Client are welcome! Here's how you
-          can contribute:
+          {`Contributions to the GenAI API Key Client are welcome! Here's how you
+          can contribute:`}
         </p>
         <ol className="list-decimal pl-5 space-y-3 text-gray-300">
           <li>
@@ -245,7 +246,7 @@ export const docSections: Record<string, DocSection> = {
           </li>
         </ol>
         <p className="text-gray-300 mt-4">
-          Please ensure your code follows the project's coding standards and
+          Please ensure your code follows the project&apos;s coding standards and
           includes appropriate tests.
         </p>
       </>
