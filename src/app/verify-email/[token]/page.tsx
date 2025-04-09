@@ -178,8 +178,8 @@ const VerifyEmailPage = () => {
                     ) : (
                       <div className="space-y-4">
                         <p className="text-gray-400 text-sm">
-                          If you're having trouble verifying your email, you
-                          can:
+                          {`If you're having trouble verifying your email, you
+                          can:`}
                         </p>
                         <Link href="/login">
                           <Button className="w-full bg-gray-800 hover:bg-gray-700 text-white font-medium">

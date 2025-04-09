@@ -1,6 +1,17 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { Inter, Outfit } from "next/font/google";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-sans",
+});
+
+const outfit = Outfit({
+  subsets: ["latin"],
+  variable: "--font-display",
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -14,10 +25,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
-        <AuthProvider>
-          {children}
-        </AuthProvider>
+      <body
+        className={`${inter.variable} ${outfit.variable} font-sans antialiased`}
+      >
+        <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
   );
