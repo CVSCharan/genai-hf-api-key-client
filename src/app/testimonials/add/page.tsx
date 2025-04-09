@@ -12,9 +12,9 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
-
 const AddTestimonialsPage = () => {
   const [formData, setFormData] = useState({
+    name: "",
     content: "",
     rating: 5,
     position: "",
@@ -30,6 +30,12 @@ const AddTestimonialsPage = () => {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
+
+    // For content field, limit to 500 characters
+    if (name === "content" && value.length > 500) {
+      return;
+    }
+
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
@@ -43,24 +49,31 @@ const AddTestimonialsPage = () => {
     setSubmitStatus(null);
 
     try {
-      // Here you would make an API call to submit the testimonial
-      // For example:
-      // const response = await fetch('/api/testimonials', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify(formData)
-      // });
-      
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      
+      // Make API call to submit the testimonial
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+      const response = await fetch(`${apiUrl}/testimonials/public`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to submit testimonial");
+      }
+
+      const data = await response.json();
+      console.log(data); // Log the response data for debugging
+
       setSubmitStatus({
         success: true,
-        message: "Your testimonial has been submitted for review. Thank you for your feedback!",
+        message:
+          "Your testimonial has been submitted for review. Thank you for your feedback!",
       });
-      
+
       // Reset form after successful submission
       setFormData({
+        name: "",
         content: "",
         rating: 5,
         position: "",
@@ -69,7 +82,9 @@ const AddTestimonialsPage = () => {
     } catch (error) {
       setSubmitStatus({
         success: false,
-        message: `There was an error submitting your testimonial - ${error instanceof Error ? error.message : 'Unknown error'}`,
+        message: `There was an error submitting your testimonial - ${
+          error instanceof Error ? error.message : "Unknown error"
+        }`,
       });
     } finally {
       setIsSubmitting(false);
@@ -81,7 +96,7 @@ const AddTestimonialsPage = () => {
       <Navbar />
 
       {/* Background sparkles effect */}
-      <div className="w-full absolute inset-0 h-screen">
+      <div className="w-full absolute inset-0">
         <SparklesCore
           id="tsparticlesfullpage"
           background="transparent"
@@ -93,48 +108,53 @@ const AddTestimonialsPage = () => {
         />
       </div>
 
-      <div className="container mx-auto px-4 pt-24 pb-16 relative z-10 flex-grow">
+      <div className="container mx-auto px-4 pt-16 pb-6 sm:pt-20 sm:pb-10 relative z-10 flex-grow flex flex-col justify-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="max-w-xl mx-auto"
+          className="max-w-xl mx-auto w-full"
         >
-          <div className="text-center mb-8">
-            <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 mb-3">
+          <div className="text-center mb-3 sm:mb-4">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 mb-1 sm:mb-2">
               Share Your Experience
             </h1>
-            <p className="text-gray-400 text-base max-w-2xl mx-auto">
-              We value your feedback! Let others know about your experience with our GenAI Platform.
+            <p className="text-gray-400 text-xs sm:text-sm max-w-2xl mx-auto">
+              We value your feedback! Let others know about your experience with
+              our GenAI Platform.
             </p>
           </div>
 
           <BackgroundGradient className="rounded-xl p-[1px]">
-            <div className="bg-gray-900 p-6 rounded-[10px]">
-              {submitStatus && (
-                <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="mb-6"
-                >
-                  <Alert
-                    className={`${
-                      submitStatus.success
-                        ? "bg-green-900/20 border-green-500/50"
-                        : "bg-red-900/20 border-red-500/50"
-                    }`}
+            <div className="bg-gray-900 p-4 sm:p-6 rounded-[10px]">
+              <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
+                <div className="space-y-1 sm:space-y-2">
+                  <Label
+                    htmlFor="name"
+                    className="text-white text-xs sm:text-sm font-medium block"
                   >
-                    <AlertDescription>
-                      {submitStatus.message}
-                    </AlertDescription>
-                  </Alert>
-                </motion.div>
-              )}
+                    Your Name
+                  </Label>
+                  <Input
+                    id="name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    placeholder="Enter your name"
+                    required
+                    className="bg-gray-800/50 border-0 focus:ring-1 focus:ring-purple-500 text-white rounded-md h-9 sm:h-10 text-sm"
+                  />
+                </div>
 
-              <form onSubmit={handleSubmit} className="space-y-5">
-                <div className="space-y-2">
-                  <Label htmlFor="content" className="text-white text-sm font-medium block">
-                    Your Testimonial
+                <div className="space-y-1 sm:space-y-2">
+                  <Label
+                    htmlFor="content"
+                    className="text-white text-xs sm:text-sm font-medium block"
+                  >
+                    Your Testimonial{" "}
+                    <span className="text-xs text-gray-400">
+                      (Max 500 characters)
+                    </span>
                   </Label>
                   <Textarea
                     id="content"
@@ -143,12 +163,16 @@ const AddTestimonialsPage = () => {
                     onChange={handleChange}
                     placeholder="Share your experience with our GenAI Platform..."
                     required
-                    className="bg-gray-800/50 border-0 focus:ring-1 focus:ring-purple-500 text-white min-h-[120px] w-full rounded-md resize-none"
+                    maxLength={500}
+                    className="bg-gray-800/50 border-0 focus:ring-1 focus:ring-purple-500 text-white min-h-[60px] sm:min-h-[100px] w-full rounded-md resize-none text-sm"
                   />
+                  <div className="text-right text-xs text-gray-400">
+                    {formData.content.length}/500 characters
+                  </div>
                 </div>
 
-                <div className="space-y-2">
-                  <Label className="text-white text-sm font-medium block">
+                <div className="space-y-1 sm:space-y-2">
+                  <Label className="text-white text-xs sm:text-sm font-medium block">
                     Rating
                   </Label>
                   <div className="flex">
@@ -157,13 +181,13 @@ const AddTestimonialsPage = () => {
                         key={star}
                         type="button"
                         onClick={() => handleRatingChange(star)}
-                        className="focus:outline-none mr-1"
+                        className="focus:outline-none mr-1 cursor-pointer"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           viewBox="0 0 24 24"
                           fill={star <= formData.rating ? "#FFD700" : "#4B5563"}
-                          className="w-7 h-7"
+                          className="w-4 h-4 sm:w-6 sm:h-6"
                         >
                           <path
                             fillRule="evenodd"
@@ -176,9 +200,12 @@ const AddTestimonialsPage = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                  <div className="space-y-2">
-                    <Label htmlFor="position" className="text-white text-sm font-medium block">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-4">
+                  <div className="space-y-1 sm:space-y-2">
+                    <Label
+                      htmlFor="position"
+                      className="text-white text-xs sm:text-sm font-medium block"
+                    >
                       Your Position
                     </Label>
                     <Input
@@ -187,12 +214,15 @@ const AddTestimonialsPage = () => {
                       value={formData.position}
                       onChange={handleChange}
                       placeholder="e.g. Software Engineer"
-                      className="bg-gray-800/50 border-0 focus:ring-1 focus:ring-purple-500 text-white rounded-md h-10"
+                      className="bg-gray-800/50 border-0 focus:ring-1 focus:ring-purple-500 text-white rounded-md h-9 sm:h-10 text-sm"
                     />
                   </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="company" className="text-white text-sm font-medium block">
+                  <div className="space-y-1 sm:space-y-2">
+                    <Label
+                      htmlFor="company"
+                      className="text-white text-xs sm:text-sm font-medium block"
+                    >
                       Company
                     </Label>
                     <Input
@@ -201,20 +231,41 @@ const AddTestimonialsPage = () => {
                       value={formData.company}
                       onChange={handleChange}
                       placeholder="e.g. Tech Innovations Inc."
-                      className="bg-gray-800/50 border-0 focus:ring-1 focus:ring-purple-500 text-white rounded-md h-10"
+                      className="bg-gray-800/50 border-0 focus:ring-1 focus:ring-purple-500 text-white rounded-md h-9 sm:h-10 text-sm"
                     />
                   </div>
                 </div>
 
-                <div className="pt-3">
+                <div className="pt-2">
                   <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-medium py-2.5 rounded-md border-0"
+                    className="cursor-pointer w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-medium py-2 rounded-md border-0 text-sm"
                   >
                     {isSubmitting ? "Submitting..." : "Submit Testimonial"}
                   </Button>
                 </div>
+                
+                {/* Success/Error message */}
+                {submitStatus && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="mt-3"
+                  >
+                    <Alert
+                      className={`${
+                        submitStatus.success
+                          ? "bg-green-900/20 border-green-500/50"
+                          : "bg-red-900/20 border-red-500/50"
+                      }`}
+                    >
+                      <AlertDescription className="text-xs sm:text-sm">
+                        {submitStatus.message}
+                      </AlertDescription>
+                    </Alert>
+                  </motion.div>
+                )}
               </form>
             </div>
           </BackgroundGradient>

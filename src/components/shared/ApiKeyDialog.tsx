@@ -12,15 +12,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Sparkles } from "lucide-react";
-
-interface ApiKeyDialogProps {
-  isOpen: boolean;
-  onOpenChange: (open: boolean) => void;
-  apiKey: string;
-  setApiKey: (key: string) => void;
-  handleSubmit: (e: React.FormEvent) => void;
-  triggerButton?: React.ReactNode;
-}
+import { ApiKeyDialogProps } from "@/types/types";
 
 export function ApiKeyDialog({
   isOpen,
@@ -46,8 +38,7 @@ export function ApiKeyDialog({
             Enter Your API Key
           </DialogTitle>
           <DialogDescription className="text-gray-400">
-            Provide your Hugging Face API key to start using GenAI
-            capabilities.
+            Provide your Hugging Face API key to start using GenAI capabilities.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4 mt-4">
@@ -62,8 +53,25 @@ export function ApiKeyDialog({
             type="submit"
             className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold py-3"
           >
-            Start Creating with AI
+            Continue to GenAI Platform
           </Button>
+          <div className="flex justify-center space-x-4 text-sm">
+            <a
+              href="/docs?section=api-key-guide"
+              target="_blank"
+              className="text-purple-400 hover:text-purple-300 transition-colors underline"
+            >
+              How to get an API key?
+            </a>
+            <a
+              href="https://huggingface.co/settings/tokens"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-pink-400 hover:text-pink-300 transition-colors underline"
+            >
+              Visit Hugging Face?
+            </a>
+          </div>
         </form>
       </DialogContent>
     </Dialog>

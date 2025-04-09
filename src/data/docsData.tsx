@@ -133,12 +133,12 @@ export const docSections: Record<string, DocSection> = {
         <div className="bg-gray-800/80 p-5 rounded-md border border-gray-700/60 flex flex-col space-y-4">
           <h3 className="text-white font-semibold">Repository</h3>
           <a
-            href="https://github.com/cvscharan/genai-api-key-client"
+            href="https://github.com/CVSCharan/genai-hf-api-key-client"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center text-purple-400 hover:underline"
           >
-            github.com/cvscharan/genai-api-key-client
+            github.com/CVSCharan/genai-hf-api-key-client
             <ExternalLink className="h-4 w-4 ml-2" />
           </a>
 

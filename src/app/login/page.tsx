@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 import { BackgroundGradient } from "@/components/ui/aceternity/background-gradient";
 import { SparklesCore } from "@/components/ui/aceternity/sparkles";
 import { Navbar } from "@/components/layout/Navbar";
-import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { FaGoogle, FaGithub } from "react-icons/fa";
@@ -14,6 +13,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { CheckCircle2 } from "lucide-react";
+import { Footer } from "@/components/layout/Footer";
 
 // Client component that safely uses useSearchParams
 const LoginPageContent = () => {
@@ -100,7 +100,7 @@ const LoginPageContent = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-black text-white">
+    <div className="flex flex-col h-screen overflow-hidden bg-black text-white">
       <Navbar />
 
       {/* Background sparkles effect */}
@@ -116,86 +116,25 @@ const LoginPageContent = () => {
         />
       </div>
 
-      <div className="container mx-auto px-6 py-24 relative z-10 flex-grow flex items-center justify-center">
+      <div className="container mx-auto px-6 flex-grow relative z-10 flex items-center justify-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           className="w-full max-w-md"
         >
-          {successMessage && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="mb-6"
-            >
-              {showAlert && (
-                <Alert
-                  autoClose={true}
-                  autoCloseTime={5000}
-                  onClose={() => setShowAlert(false)}
-                  variant="success"
-                  className="flex items-center"
-                >
-                  <CheckCircle2 className="h-5 w-5 text-green-400 flex-shrink-0" />
-                  <AlertDescription className="ml-2">
-                    {successMessage}
-                  </AlertDescription>
-                </Alert>
-              )}
-            </motion.div>
-          )}
-
-          {errorMessage && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="mb-6"
-            >
-              {showAlert && (
-                <Alert
-                  autoClose={true}
-                  autoCloseTime={5000}
-                  onClose={() => setShowAlert(false)}
-                  variant="destructive"
-                  className="flex items-center"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="h-5 w-5 text-red-400 flex-shrink-0"
-                  >
-                    <circle cx="12" cy="12" r="10" />
-                    <line x1="15" y1="9" x2="9" y2="15" />
-                    <line x1="9" y1="9" x2="15" y2="15" />
-                  </svg>
-                  <AlertDescription className="ml-2">
-                    {errorMessage}
-                  </AlertDescription>
-                </Alert>
-              )}
-            </motion.div>
-          )}
-
-          <div className="text-center mb-8">
-            <h1 className="text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 mb-3">
+          <div className="text-center mb-6">
+            <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 mb-2">
               GenAI Platform
             </h1>
-            <p className="text-gray-400 text-lg">
+            <p className="text-gray-400 text-base md:text-lg">
               Sign in to access your API keys and dashboard
             </p>
           </div>
 
           <BackgroundGradient className="rounded-xl p-[1px]">
-            <div className="bg-gray-900 p-8 rounded-[10px]">
-              <div className="space-y-4 mb-6">
+            <div className="bg-gray-900 p-6 md:p-8 rounded-[10px]">
+              <div className="space-y-3 mb-5">
                 <Button
                   className="cursor-pointer w-full bg-white hover:bg-gray-200 text-gray-900 font-medium flex items-center justify-center"
                   onClick={() => handleOAuthLogin("Google")}
@@ -212,14 +151,14 @@ const LoginPageContent = () => {
                 </Button>
               </div>
 
-              <div className="relative my-6">
+              <div className="relative my-5">
                 <Separator className="bg-gray-700" />
                 <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-900 px-2 text-sm text-gray-400">
                   OR
                 </span>
               </div>
 
-              <form onSubmit={handleLogin} className="space-y-4">
+              <form onSubmit={handleLogin} className="space-y-3">
                 <div>
                   <Input
                     type="email"
@@ -312,7 +251,7 @@ const LoginPageContent = () => {
                 <Button
                   type="submit"
                   disabled={isLoading}
-                  className={`w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold py-3 ${
+                  className={`w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold py-2 ${
                     isLoading ? "cursor-wait" : "cursor-pointer"
                   }`}
                 >
@@ -344,9 +283,65 @@ const LoginPageContent = () => {
                     "Sign in"
                   )}
                 </Button>
+
+                {/* Success and error messages moved to bottom */}
+                {successMessage && showAlert && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <Alert
+                      autoClose={true}
+                      autoCloseTime={5000}
+                      onClose={() => setShowAlert(false)}
+                      variant="success"
+                      className="flex items-center"
+                    >
+                      <CheckCircle2 className="h-4 w-4 text-green-400 flex-shrink-0" />
+                      <AlertDescription className="ml-2 text-xs">
+                        {successMessage}
+                      </AlertDescription>
+                    </Alert>
+                  </motion.div>
+                )}
+
+                {errorMessage && showAlert && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <Alert
+                      autoClose={true}
+                      autoCloseTime={5000}
+                      onClose={() => setShowAlert(false)}
+                      variant="destructive"
+                      className="flex items-center"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="h-4 w-4 text-red-400 flex-shrink-0"
+                      >
+                        <circle cx="12" cy="12" r="10" />
+                        <line x1="15" y1="9" x2="9" y2="15" />
+                        <line x1="9" y1="9" x2="15" y2="15" />
+                      </svg>
+                      <AlertDescription className="ml-2 text-xs">
+                        {errorMessage}
+                      </AlertDescription>
+                    </Alert>
+                  </motion.div>
+                )}
               </form>
 
-              <div className="mt-6 text-center text-sm text-gray-400">
+              <div className="mt-4 text-center text-sm text-gray-400">
                 Don&apos;t have an account?{" "}
                 <Link
                   href="/register"
@@ -375,7 +370,6 @@ const LoadingFallback = () => {
           <p className="text-xl text-gray-300">Loading...</p>
         </div>
       </div>
-      <Footer />
     </div>
   );
 };
@@ -384,7 +378,7 @@ const LoadingFallback = () => {
 const LoginPage = () => {
   return (
     <Suspense fallback={<LoadingFallback />}>
-      <LoginPageContent />;
+      <LoginPageContent />
     </Suspense>
   );
 };

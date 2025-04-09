@@ -35,12 +35,14 @@ export function Navbar() {
                 Home
               </Link>
             )}
-            <Link
-              href="/about"
-              className="text-gray-300 hover:text-white transition-colors"
-            >
-              About
-            </Link>
+            {pathname !== "/about" && (
+              <Link
+                href="/about"
+                className="text-gray-300 hover:text-white transition-colors"
+              >
+                About
+              </Link>
+            )}
             {pathname !== "/docs" && (
               <Link
                 href="/docs"
@@ -60,9 +62,17 @@ export function Navbar() {
             {pathname === "/" && (
               <Link
                 href="/login"
-                className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white pt-2 pb-2 pr-4 pl-4 rounded transition-colors"
+                className="text-pink-500 hover:text-purple-500 transition-colors font-semibold"
               >
-                Login
+                Log In
+              </Link>
+            )}
+            {pathname === "/" && (
+              <Link
+                href="/register"
+                className="bg-gradient-to-r from-pink-500 to-purple-500 hover:from-purple-600 hover:to-pink-600 text-white pt-1.5 pb-1.5 pr-4 pl-4 rounded-xl transition-colors"
+              >
+                Sign Up
               </Link>
             )}
           </div>

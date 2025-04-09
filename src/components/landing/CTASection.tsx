@@ -1,19 +1,13 @@
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { BackgroundGradient } from "@/components/ui/aceternity/background-gradient";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { CTASectionProps } from "@/types/types";
+import { ApiKeyDialog } from "@/components/shared/ApiKeyDialog";
 
 export function CTASection({
   apiKey,
   setApiKey,
+  isModalOpen,
+  setIsModalOpen,
   handleSubmit,
 }: CTASectionProps) {
   return (
@@ -28,39 +22,20 @@ export function CTASection({
               Start creating, analyzing, and conversing with cutting-edge AI
               models today.
             </p>
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold py-3 px-8 text-lg cursor-pointer">
-                  Get Started Now
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="bg-gray-900 border-gray-800">
-                <DialogHeader>
-                  <DialogTitle className="text-white text-xl">
-                    Enter Your API Key
-                  </DialogTitle>
-                  <DialogDescription className="text-gray-400">
-                    Provide your Hugging Face API key to start using GenAI
-                    capabilities.
-                  </DialogDescription>
-                </DialogHeader>
-                <form onSubmit={handleSubmit} className="space-y-4 mt-4">
-                  <Input
-                    type="password"
-                    placeholder="Enter your Hugging Face API Key"
-                    value={apiKey}
-                    onChange={(e) => setApiKey(e.target.value)}
-                    className="bg-gray-800 border-gray-700 text-white"
-                  />
-                  <Button
-                    type="submit"
-                    className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold py-3"
-                  >
-                    Start Creating with AI
+            <div className="mt-10">
+              <ApiKeyDialog
+                isOpen={isModalOpen}
+                onOpenChange={setIsModalOpen}
+                apiKey={apiKey}
+                setApiKey={setApiKey}
+                handleSubmit={handleSubmit}
+                triggerButton={
+                  <Button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold py-3 px-8 text-lg">
+                    Get Started Now
                   </Button>
-                </form>
-              </DialogContent>
-            </Dialog>
+                }
+              />
+            </div>
           </div>
         </BackgroundGradient>
       </div>
