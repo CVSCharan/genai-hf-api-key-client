@@ -1,15 +1,36 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { Suspense, useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { DocNavigation } from "@/components/docs/DocNavigation";
 import { DocContent } from "@/components/docs/DocContent";
 import { navItems, docSections } from "@/data/docsData";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 
-const DocumentationPage = () => {
+const DocumentationPageContent = () => {
   const [activeSection, setActiveSection] = useState("how-it-works");
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const searchParams = useSearchParams();
+
+  // Check for section in URL query params when component mounts
+  useEffect(() => {
+    const sectionParam = searchParams.get("section");
+    if (
+      sectionParam &&
+      navItems.some(
+        (item) =>
+          item.id === sectionParam ||
+          item.children?.some((child) => child.id === sectionParam)
+      )
+    ) {
+      setActiveSection(sectionParam);
+
+      // Reset URL to remove the query parameter
+      const { pathname } = window.location;
+      window.history.replaceState({}, "", pathname);
+    }
+  }, [searchParams]);
 
   return (
     <div className="flex flex-col min-h-screen bg-black text-white">
@@ -74,6 +95,30 @@ const DocumentationPage = () => {
       </main>
       <Footer />
     </div>
+  );
+};
+
+// Loading fallback component
+const LoadingFallback = () => {
+  return (
+    <div className="flex flex-col min-h-screen bg-black text-white">
+      <Navbar />
+      <div className="container mx-auto px-6 py-24 relative z-10 flex-grow flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-xl text-gray-300">Loading...</p>
+        </div>
+      </div>
+      <Footer />
+    </div>
+  );
+};
+
+// Main page component
+const DocumentationPage = () => {
+  return (
+    <Suspense fallback={<LoadingFallback />}>
+      <DocumentationPageContent />
+    </Suspense>
   );
 };
 

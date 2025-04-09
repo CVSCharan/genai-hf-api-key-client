@@ -5,13 +5,13 @@ import { motion } from "framer-motion";
 import { BackgroundGradient } from "@/components/ui/aceternity/background-gradient";
 import { SparklesCore } from "@/components/ui/aceternity/sparkles";
 import { Navbar } from "@/components/layout/Navbar";
-import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { FaGoogle, FaGithub } from "react-icons/fa";
 import { Separator } from "@/components/ui/separator";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import Link from "next/link";
+import { Footer } from "@/components/layout/Footer";
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
@@ -121,7 +121,7 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-black text-white">
+    <div className="flex flex-col h-screen overflow-hidden bg-black text-white">
       <Navbar />
 
       {/* Background sparkles effect */}
@@ -137,89 +137,14 @@ const RegisterPage = () => {
         />
       </div>
 
-      <div className="container mx-auto px-6 py-24 relative z-10 flex-grow flex items-center justify-center">
+      <div className="container mx-auto px-6 relative z-10 flex-grow flex items-center justify-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           className="w-full max-w-md"
         >
-          {/* Success message alert */}
-          {successMessage && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="mb-6"
-            >
-              {showAlert && (
-                <Alert
-                  autoClose={true}
-                  autoCloseTime={5000}
-                  onClose={() => setShowAlert(false)}
-                  variant="success"
-                  className="flex items-center bg-green-900/20 border border-green-800 text-green-300"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="h-5 w-5 text-green-400 flex-shrink-0"
-                  >
-                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                  </svg>
-                  <AlertDescription className="ml-2">
-                    {successMessage}
-                  </AlertDescription>
-                </Alert>
-              )}
-            </motion.div>
-          )}
-
-          {/* Error message alert */}
-          {errorMessage && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="mb-6"
-            >
-              {showAlert && (
-                <Alert
-                  autoClose={true}
-                  autoCloseTime={5000}
-                  onClose={() => setShowAlert(false)}
-                  variant="destructive"
-                  className="flex items-center"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="h-5 w-5 text-red-400 flex-shrink-0"
-                  >
-                    <circle cx="12" cy="12" r="10" />
-                    <line x1="15" y1="9" x2="9" y2="15" />
-                    <line x1="9" y1="9" x2="15" y2="15" />
-                  </svg>
-                  <AlertDescription className="ml-2">
-                    {errorMessage}
-                  </AlertDescription>
-                </Alert>
-              )}
-            </motion.div>
-          )}
-
-          <div className="text-center mb-8">
+          <div className="text-center mb-6">
             <h1 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 mb-2">
               Create Account
             </h1>
@@ -229,8 +154,8 @@ const RegisterPage = () => {
           </div>
 
           <BackgroundGradient className="rounded-xl p-[1px]">
-            <div className="bg-gray-900 p-8 rounded-[10px]">
-              <div className="space-y-4 mb-6">
+            <div className="bg-gray-900 p-6 rounded-[10px]">
+              <div className="space-y-3 mb-4">
                 <Button
                   className="cursor-pointer w-full bg-white hover:bg-gray-200 text-gray-900 font-medium flex items-center justify-center"
                   onClick={() => handleOAuthRegister("Google")}
@@ -247,14 +172,14 @@ const RegisterPage = () => {
                 </Button>
               </div>
 
-              <div className="relative my-6">
+              <div className="relative my-4">
                 <Separator className="bg-gray-700" />
                 <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-900 px-2 text-sm text-gray-400">
                   OR
                 </span>
               </div>
 
-              <form onSubmit={handleRegister} className="space-y-4">
+              <form onSubmit={handleRegister} className="space-y-3">
                 <div>
                   <Input
                     type="text"
@@ -424,7 +349,7 @@ const RegisterPage = () => {
                 <Button
                   type="submit"
                   disabled={isLoading || !termsAccepted}
-                  className={`w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold py-3 ${
+                  className={`w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold py-2 ${
                     isLoading ? "cursor-wait" : "cursor-pointer"
                   }`}
                 >
@@ -456,9 +381,79 @@ const RegisterPage = () => {
                     "Create Account"
                   )}
                 </Button>
+
+                {/* Success and error messages moved to bottom */}
+                {successMessage && showAlert && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="mt-3"
+                  >
+                    <Alert
+                      autoClose={true}
+                      autoCloseTime={5000}
+                      onClose={() => setShowAlert(false)}
+                      variant="success"
+                      className="flex items-center bg-green-900/20 border border-green-800 text-green-300"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="h-4 w-4 text-green-400 flex-shrink-0"
+                      >
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                      </svg>
+                      <AlertDescription className="ml-2 text-xs">
+                        {successMessage}
+                      </AlertDescription>
+                    </Alert>
+                  </motion.div>
+                )}
+
+                {errorMessage && showAlert && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="mt-3"
+                  >
+                    <Alert
+                      autoClose={true}
+                      autoCloseTime={5000}
+                      onClose={() => setShowAlert(false)}
+                      variant="destructive"
+                      className="flex items-center"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="h-4 w-4 text-red-400 flex-shrink-0"
+                      >
+                        <circle cx="12" cy="12" r="10" />
+                        <line x1="15" y1="9" x2="9" y2="15" />
+                        <line x1="9" y1="9" x2="15" y2="15" />
+                      </svg>
+                      <AlertDescription className="ml-2 text-xs">
+                        {errorMessage}
+                      </AlertDescription>
+                    </Alert>
+                  </motion.div>
+                )}
               </form>
 
-              <div className="mt-6 text-center text-sm text-gray-400">
+              <div className="mt-4 text-center text-sm text-gray-400">
                 Already have an account?{" "}
                 <Link
                   href="/login"

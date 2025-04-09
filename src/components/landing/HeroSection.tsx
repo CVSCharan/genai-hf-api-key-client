@@ -2,21 +2,13 @@
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { SparklesCore } from "@/components/ui/aceternity/sparkles";
 import { TextGenerateEffect } from "@/components/ui/aceternity/text-generate-effect";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Sparkles, Code } from "lucide-react";
+import { Code } from "lucide-react";
 import { HeroSectionProps } from "@/types/types";
 import { useRef } from "react";
 import Link from "next/link";
+import { ApiKeyDialog } from "../shared/ApiKeyDialog";
 
 export function HeroSection({
   apiKey,
@@ -67,7 +59,7 @@ export function HeroSection({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="mb-8 relative backdrop-blur-sm bg-black/30 p-8 rounded-2xl border border-gray-800/50 shadow-xl"
+          className="mb-8 relative backdrop-blur-sm bg-black/30 p-6 sm:p-8 rounded-2xl border border-gray-800/50 shadow-xl max-w-4xl mx-auto w-full"
           style={{
             opacity: contentOpacity,
             rotate: contentRotate,
@@ -77,7 +69,7 @@ export function HeroSection({
           <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-2xl"></div>
           <div className="relative z-10">
             <motion.div style={{ y: titleY }}>
-              <h1 className="text-5xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 mb-4">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 mb-3 md:mb-4">
                 Unlock the Power of GenAI
               </h1>
             </motion.div>
@@ -85,9 +77,9 @@ export function HeroSection({
             <motion.div style={{ y: subtitleY }}>
               <TextGenerateEffect
                 words="Imagination to Innovation"
-                className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto"
+                className="text-lg sm:text-xl md:text-2xl text-gray-300 max-w-2xl mx-auto"
               />
-              <p className="text-gray-400 mt-4">
+              <p className="text-gray-400 mt-3 md:mt-4 text-sm sm:text-base">
                 Engineered by{" "}
                 <span className="text-purple-400 font-semibold">
                   CVS Charan
@@ -105,40 +97,13 @@ export function HeroSection({
           style={{ y: buttonsY, opacity: contentOpacity }}
         >
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-              <DialogTrigger asChild>
-                <Button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold py-3 px-8 text-lg cursor-pointer">
-                  <Sparkles className="h-5 w-5 mr-2" />
-                  Try Now
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="bg-gray-900 border-gray-800">
-                <DialogHeader>
-                  <DialogTitle className="text-white text-xl">
-                    Enter Your API Key
-                  </DialogTitle>
-                  <DialogDescription className="text-gray-400">
-                    Provide your Hugging Face API key to start using GenAI
-                    capabilities.
-                  </DialogDescription>
-                </DialogHeader>
-                <form onSubmit={handleSubmit} className="space-y-4 mt-4">
-                  <Input
-                    type="password"
-                    placeholder="Enter your Hugging Face API Key"
-                    value={apiKey}
-                    onChange={(e) => setApiKey(e.target.value)}
-                    className="bg-gray-800 border-gray-700 text-white"
-                  />
-                  <Button
-                    type="submit"
-                    className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold py-3"
-                  >
-                    Start Creating with AI
-                  </Button>
-                </form>
-              </DialogContent>
-            </Dialog>
+            <ApiKeyDialog
+              isOpen={isModalOpen}
+              onOpenChange={setIsModalOpen}
+              apiKey={apiKey}
+              setApiKey={setApiKey}
+              handleSubmit={handleSubmit}
+            />
             <Link href="/docs?section=source-code">
               <Button
                 variant="outline"

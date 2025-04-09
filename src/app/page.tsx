@@ -25,7 +25,7 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-black">
       <Navbar />
-      <HeroSection 
+      <HeroSection
         apiKey={apiKey}
         setApiKey={setApiKey}
         isModalOpen={isModalOpen}
@@ -36,9 +36,11 @@ export default function Home() {
       <FeaturesSection />
       <HowItWorksSection />
       <TestimonialSection />
-      <CTASection 
+      <CTASection
         apiKey={apiKey}
         setApiKey={setApiKey}
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
         handleSubmit={handleSubmit}
       />
       <Footer />

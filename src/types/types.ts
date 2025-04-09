@@ -68,6 +68,8 @@ export interface StepItem {
 export interface CTASectionProps {
   apiKey: string;
   setApiKey: (value: string) => void;
+  isModalOpen: boolean;
+  setIsModalOpen: (value: boolean) => void;
   handleSubmit: (e: React.FormEvent) => void;
 }
 
@@ -98,3 +100,18 @@ export type SparklesCoreProps = {
 export type InputProps = React.InputHTMLAttributes<HTMLInputElement>;
 
 export type TextareaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement>;
+
+export interface ApiKeyDialogProps {
+  isOpen: boolean;
+  onOpenChange: (open: boolean) => void;
+  apiKey: string;
+  setApiKey: (key: string) => void;
+  handleSubmit: (e: React.FormEvent) => void;
+  triggerButton?: React.ReactNode;
+}
+
+export interface DocNavigationProps {
+  navItems: NavItem[];
+  activeSection: string;
+  setActiveSection: (section: string) => void;
+}

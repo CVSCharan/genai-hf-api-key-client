@@ -3,13 +3,7 @@
 import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 import { ChevronRight } from "lucide-react";
-import { NavItem } from "@/types/types";
-
-interface DocNavigationProps {
-  navItems: NavItem[];
-  activeSection: string;
-  setActiveSection: (section: string) => void;
-}
+import { DocNavigationProps } from "@/types/types";
 
 export const DocNavigation = ({
   navItems,
