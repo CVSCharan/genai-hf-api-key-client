@@ -1,12 +1,12 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
-import { Testimonial, PaginatedResponse } from "@/types/types";
+import React, { createContext, useContext, useState, ReactNode } from "react";
+import { Testimonial } from "@/types/types";
 
 interface TestimonialsContextType {
   // Shared state
   apiUrl: string;
-  
+
   // For testimonials page (paginated)
   testimonials: Testimonial[];
   loading: boolean;
@@ -14,12 +14,12 @@ interface TestimonialsContextType {
   error: string | null;
   currentPage: number;
   totalPages: number;
-  
+
   // For testimonial section (recent)
   recentTestimonials: Testimonial[];
   recentLoading: boolean;
   recentError: string | null;
-  
+
   // Methods
   fetchTestimonials: (page: number, limit: number) => Promise<void>;
   loadMoreTestimonials: () => Promise<void>;
@@ -27,12 +27,16 @@ interface TestimonialsContextType {
   resetTestimonials: () => void;
 }
 
-const TestimonialsContext = createContext<TestimonialsContextType | undefined>(undefined);
+const TestimonialsContext = createContext<TestimonialsContextType | undefined>(
+  undefined
+);
 
 export const useTestimonials = () => {
   const context = useContext(TestimonialsContext);
   if (context === undefined) {
-    throw new Error("useTestimonials must be used within a TestimonialsProvider");
+    throw new Error(
+      "useTestimonials must be used within a TestimonialsProvider"
+    );
   }
   return context;
 };
@@ -41,10 +45,12 @@ interface TestimonialsProviderProps {
   children: ReactNode;
 }
 
-export const TestimonialsProvider = ({ children }: TestimonialsProviderProps) => {
+export const TestimonialsProvider = ({
+  children,
+}: TestimonialsProviderProps) => {
   // Shared state
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api";
-  
+
   // For testimonials page (paginated)
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [loading, setLoading] = useState(false);
@@ -53,18 +59,20 @@ export const TestimonialsProvider = ({ children }: TestimonialsProviderProps) =>
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [pageLimit, setPageLimit] = useState(4); // Store the limit used for initial fetch
-  
+
   // For testimonial section (recent)
-  const [recentTestimonials, setRecentTestimonials] = useState<Testimonial[]>([]);
+  const [recentTestimonials, setRecentTestimonials] = useState<Testimonial[]>(
+    []
+  );
   const [recentLoading, setRecentLoading] = useState(false);
   const [recentError, setRecentError] = useState<string | null>(null);
-  
+
   // Fetch paginated testimonials
   const fetchTestimonials = async (page: number = 1, limit: number = 4) => {
     setLoading(true);
     setError(null);
     setPageLimit(limit); // Store the limit for future use
-    
+
     try {
       const response = await fetch(
         `${apiUrl}/testimonials/approved?page=${page}&limit=${limit}`
@@ -76,12 +84,12 @@ export const TestimonialsProvider = ({ children }: TestimonialsProviderProps) =>
 
       const data = await response.json();
       // Ensure we're handling the response correctly
-      const testimonialsList = Array.isArray(data.testimonials) 
-        ? data.testimonials 
-        : Array.isArray(data) 
-          ? data 
-          : [];
-          
+      const testimonialsList = Array.isArray(data.testimonials)
+        ? data.testimonials
+        : Array.isArray(data)
+        ? data
+        : [];
+
       setTestimonials(testimonialsList);
       setTotalPages(data.totalPages || 1);
       setCurrentPage(page);
@@ -98,7 +106,7 @@ export const TestimonialsProvider = ({ children }: TestimonialsProviderProps) =>
   // Load more testimonials (pagination)
   const loadMoreTestimonials = async () => {
     if (currentPage >= totalPages) return;
-    
+
     setLoadingMore(true);
     try {
       const nextPage = currentPage + 1;
@@ -111,16 +119,16 @@ export const TestimonialsProvider = ({ children }: TestimonialsProviderProps) =>
       }
 
       const data = await response.json();
-      
+
       // Ensure we're handling the response correctly
-      const newTestimonials = Array.isArray(data.testimonials) 
-        ? data.testimonials 
-        : Array.isArray(data) 
-          ? data 
-          : [];
-          
+      const newTestimonials = Array.isArray(data.testimonials)
+        ? data.testimonials
+        : Array.isArray(data)
+        ? data
+        : [];
+
       // Properly append new testimonials to existing ones
-      setTestimonials(prev => [...prev, ...newTestimonials]);
+      setTestimonials((prev) => [...prev, ...newTestimonials]);
       setCurrentPage(nextPage);
     } catch (err) {
       console.error("Error fetching more testimonials:", err);
@@ -134,22 +142,22 @@ export const TestimonialsProvider = ({ children }: TestimonialsProviderProps) =>
   const fetchRecentTestimonials = async () => {
     setRecentLoading(true);
     setRecentError(null);
-    
+
     try {
       const response = await fetch(`${apiUrl}/testimonials/recent`);
-      
+
       if (!response.ok) {
         throw new Error("Failed to fetch recent testimonials");
       }
-      
+
       const data = await response.json();
       // Handle both array response and object with testimonials property
-      const testimonialArray = Array.isArray(data) 
-        ? data 
-        : Array.isArray(data.testimonials) 
-          ? data.testimonials 
-          : [];
-          
+      const testimonialArray = Array.isArray(data)
+        ? data
+        : Array.isArray(data.testimonials)
+        ? data.testimonials
+        : [];
+
       setRecentTestimonials(testimonialArray);
     } catch (err) {
       console.error("Error fetching recent testimonials:", err);
@@ -182,7 +190,7 @@ export const TestimonialsProvider = ({ children }: TestimonialsProviderProps) =>
     fetchTestimonials,
     loadMoreTestimonials,
     fetchRecentTestimonials,
-    resetTestimonials
+    resetTestimonials,
   };
 
   return (
