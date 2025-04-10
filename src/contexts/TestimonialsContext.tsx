@@ -1,31 +1,11 @@
 "use client";
 
-import React, { createContext, useContext, useState, ReactNode } from "react";
-import { Testimonial } from "@/types/types";
-
-interface TestimonialsContextType {
-  // Shared state
-  apiUrl: string;
-
-  // For testimonials page (paginated)
-  testimonials: Testimonial[];
-  loading: boolean;
-  loadingMore: boolean;
-  error: string | null;
-  currentPage: number;
-  totalPages: number;
-
-  // For testimonial section (recent)
-  recentTestimonials: Testimonial[];
-  recentLoading: boolean;
-  recentError: string | null;
-
-  // Methods
-  fetchTestimonials: (page: number, limit: number) => Promise<void>;
-  loadMoreTestimonials: () => Promise<void>;
-  fetchRecentTestimonials: () => Promise<void>;
-  resetTestimonials: () => void;
-}
+import React, { createContext, useContext, useState } from "react";
+import {
+  Testimonial,
+  TestimonialsContextType,
+  TestimonialsProviderProps,
+} from "@/types/types";
 
 const TestimonialsContext = createContext<TestimonialsContextType | undefined>(
   undefined
@@ -40,10 +20,6 @@ export const useTestimonials = () => {
   }
   return context;
 };
-
-interface TestimonialsProviderProps {
-  children: ReactNode;
-}
 
 export const TestimonialsProvider = ({
   children,
