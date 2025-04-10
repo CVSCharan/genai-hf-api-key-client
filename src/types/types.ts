@@ -18,18 +18,19 @@ export interface AuthContextType {
   logout: () => void;
 }
 
-export type Testimonial = {
+export interface Testimonial {
   _id: string;
-  user: {
-    _id: string;
-    name: string;
-    avatar?: string;
-  };
+  user: string;
+  name: string;
+  avatar?: string;
   content: string;
   rating: number;
+  isApproved: boolean;
   position?: string;
   company?: string;
-};
+  createdAt: string;
+  updatedAt: string;
+}
 
 export interface TourStepProps {
   step: number;
@@ -114,4 +115,11 @@ export interface DocNavigationProps {
   navItems: NavItem[];
   activeSection: string;
   setActiveSection: (section: string) => void;
+}
+
+export interface PaginatedResponse {
+  testimonials: Testimonial[];
+  totalPages: number;
+  currentPage: number;
+  totalTestimonials: number;
 }

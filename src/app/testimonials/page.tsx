@@ -1,109 +1,39 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { SparklesCore } from "@/components/ui/aceternity/sparkles";
 import Link from "next/link";
 import Image from "next/image";
-
-// Define the testimonial type based on your schema
-type Testimonial = {
-  _id: string;
-  user: {
-    _id: string;
-    name: string;
-    avatar?: string;
-  };
-  content: string;
-  rating: number;
-  position?: string;
-  company?: string;
-};
+import { useTestimonials } from "@/contexts/TestimonialsContext";
 
 const TestimonialsPage = () => {
-  // Mock data - in a real app, you would fetch this from your API
-  const testimonials: Testimonial[] = [
-    {
-      _id: "1",
-      user: {
-        _id: "u1",
-        name: "Sarah Johnson",
-        avatar: "/avatars/avatar-1.jpg",
-      },
-      content:
-        "The GenAI Platform has completely transformed how we implement AI solutions. The API is intuitive and the documentation is excellent. We've reduced our development time by 60%.",
-      rating: 5,
-      position: "CTO",
-      company: "TechInnovate",
-    },
-    {
-      _id: "2",
-      user: {
-        _id: "u2",
-        name: "Michael Chen",
-        avatar: "/avatars/avatar-2.jpg",
-      },
-      content:
-        "As a startup founder, I needed an AI solution that was both powerful and cost-effective. GenAI Platform delivered on both fronts. Their API key management is seamless.",
-      rating: 5,
-      position: "Founder",
-      company: "AI Ventures",
-    },
-    {
-      _id: "3",
-      user: {
-        _id: "u3",
-        name: "Emily Rodriguez",
-        avatar: "/avatars/avatar-3.jpg",
-      },
-      content:
-        "The customer support team is exceptional. Whenever we had questions about implementation, they were quick to respond with detailed solutions.",
-      rating: 4,
-      position: "Lead Developer",
-      company: "CodeCraft",
-    },
-    {
-      _id: "4",
-      user: {
-        _id: "u4",
-        name: "David Wilson",
-        avatar: "/avatars/avatar-4.jpg",
-      },
-      content:
-        "GenAI Platform's API has been a game-changer for our machine learning projects. The integration was smooth and the performance is outstanding.",
-      rating: 5,
-      position: "ML Engineer",
-      company: "DataSphere",
-    },
-    {
-      _id: "5",
-      user: {
-        _id: "u5",
-        name: "Jennifer Lee",
-        avatar: "/avatars/avatar-5.jpg",
-      },
-      content:
-        "We've tried several AI platforms, but GenAI stands out for its reliability and ease of use. The documentation is comprehensive and the support team is always helpful.",
-      rating: 5,
-      position: "Product Manager",
-      company: "InnoTech",
-    },
-    {
-      _id: "6",
-      user: {
-        _id: "u6",
-        name: "Robert Martinez",
-        avatar: "/avatars/avatar-6.jpg",
-      },
-      content:
-        "The GenAI Platform has helped us build AI features that we thought were years away from being possible. Their API is well-designed and the pricing is transparent.",
-      rating: 4,
-      position: "CIO",
-      company: "FutureTech",
-    },
-  ];
+  // Use the shared context
+  const {
+    testimonials,
+    loading,
+    loadingMore,
+    error,
+    currentPage,
+    totalPages,
+    fetchTestimonials,
+    loadMoreTestimonials,
+    resetTestimonials,
+  } = useTestimonials();
+
+  const limit = 4; // Number of testimonials per page
+
+  // Fetch testimonials on component mount
+  useEffect(() => {
+    fetchTestimonials(1, limit);
+
+    // Cleanup function to reset state when component unmounts
+    return () => {
+      resetTestimonials();
+    };
+  }, [limit]); // Add all dependencies
 
   // Function to render stars based on rating
   const renderStars = (rating: number) => {
@@ -166,67 +96,118 @@ const TestimonialsPage = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-            {testimonials.map((testimonial, index) => (
-              <motion.div
-                key={testimonial._id}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+          {loading ? (
+            <div className="flex justify-center items-center py-20">
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
+            </div>
+          ) : error ? (
+            <div className="text-center py-10">
+              <p className="text-red-400 text-lg">{error}</p>
+              <button
+                onClick={() => fetchTestimonials(1, limit)}
+                className="mt-4 px-6 py-2 bg-purple-600 rounded-md hover:bg-purple-700 transition-colors"
               >
-                <div className="rounded-xl bg-gradient-to-r from-purple-600/50 via-pink-500/50 to-purple-600/50 p-[1px] h-full">
-                  <div className="bg-gray-900 p-6 rounded-[10px] flex flex-col h-full">
-                    <div className="flex items-center mb-3">
-                      <div className="relative w-10 h-10 rounded-full overflow-hidden mr-3 bg-gray-800 flex-shrink-0">
-                        {testimonial.user.avatar ? (
-                          <Image
-                            src={testimonial.user.avatar}
-                            alt={testimonial.user.name}
-                            fill
-                            className="object-cover"
-                          />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center text-lg font-bold text-white">
-                            {testimonial.user.name.charAt(0)}
+                Try Again
+              </button>
+            </div>
+          ) : testimonials.length === 0 ? (
+            <div className="text-center py-10">
+              <p className="text-gray-400 text-lg">No testimonials found.</p>
+            </div>
+          ) : (
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                {testimonials.map((testimonial, index) => (
+                  <motion.div
+                    key={testimonial._id}
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                  >
+                    <div className="rounded-xl bg-gradient-to-r from-purple-600/50 via-pink-500/50 to-purple-600/50 p-[1px] h-full">
+                      <div className="bg-gray-900 p-6 rounded-[10px] flex flex-col h-full">
+                        <div className="flex items-center mb-3">
+                          <div className="relative w-10 h-10 rounded-full overflow-hidden mr-3 bg-gray-800 flex-shrink-0">
+                            {testimonial.avatar ? (
+                              <Image
+                                src={testimonial.avatar}
+                                alt={testimonial.name}
+                                fill
+                                className="object-cover"
+                              />
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center text-lg font-bold text-white">
+                                {testimonial.name.charAt(0)}
+                              </div>
+                            )}
                           </div>
-                        )}
-                      </div>
-                      <div>
-                        <h3 className="font-bold text-white text-lg">
-                          {testimonial.user.name}
-                        </h3>
-                        {testimonial.position && testimonial.company && (
-                          <p className="text-sm text-gray-400">
-                            {testimonial.position} at {testimonial.company}
-                          </p>
-                        )}
+                          <div>
+                            <h3 className="font-bold text-white text-lg">
+                              {testimonial.name}
+                            </h3>
+                            {testimonial.position && testimonial.company && (
+                              <p className="text-sm text-gray-400">
+                                {testimonial.position} at {testimonial.company}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="flex mb-3">
+                          {renderStars(testimonial.rating)}
+                        </div>
+
+                        <p className="text-gray-300 text-base flex-grow">
+                          &quot;{testimonial.content}&quot;
+                        </p>
                       </div>
                     </div>
+                  </motion.div>
+                ))}
+              </div>
 
-                    <div className="flex mb-3">
-                      {renderStars(testimonial.rating)}
-                    </div>
-
-                    <p className="text-gray-300 text-base flex-grow">
-                      &quot;{testimonial.content}&quot;
-                    </p>
-                  </div>
+              {currentPage < totalPages && (
+                <div className="flex justify-center mt-10">
+                  <button
+                    onClick={() => loadMoreTestimonials()} // Remove the limit parameter
+                    disabled={loadingMore}
+                    className="px-8 py-3 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-medium transition-all duration-200 flex items-center space-x-2 disabled:opacity-70"
+                  >
+                    {loadingMore ? (
+                      <>
+                        <span className="animate-spin h-5 w-5 border-t-2 border-b-2 border-white rounded-full mr-2"></span>
+                        <span>Loading...</span>
+                      </>
+                    ) : (
+                      <span>Load More Testimonials</span>
+                    )}
+                  </button>
                 </div>
-              </motion.div>
-            ))}
-          </div>
+              )}
+            </>
+          )}
 
-          <div className="mt-16 text-center">
-            <p className="text-gray-400 mb-6">
-              Join hundreds of satisfied users who have transformed their AI
-              development with GenAI Platform
-            </p>
-            <Link
-              href="/testimonials/add"
-              className="inline-flex items-center px-8 py-3 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-medium transition-all duration-200"
-            >
-              Add Your Testimonial
-            </Link>
+          <div className="mt-16">
+            <div className="rounded-xl bg-gradient-to-r from-purple-600/70 via-pink-500/70 to-purple-600/70 p-[1px]">
+              <div className="bg-gray-900/90 backdrop-blur-sm p-8 md:p-10 rounded-[10px] flex flex-col md:flex-row items-center justify-between">
+                <div className="text-left mb-6 md:mb-0 md:mr-8">
+                  <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">
+                    Share Your Experience
+                  </h3>
+                  <p className="text-gray-300 text-lg max-w-xl">
+                    Join hundreds of satisfied users who have transformed their
+                    AI development with GenAI Platform. Your feedback helps us
+                    improve.
+                  </p>
+                </div>
+                <Link
+                  href="/testimonials/add"
+                  className="inline-flex items-center px-8 py-4 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-medium transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-105 transform whitespace-nowrap"
+                >
+                  Add Your Testimonial
+                </Link>
+              </div>
+            </div>
           </div>
         </motion.div>
       </div>

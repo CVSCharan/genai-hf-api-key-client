@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { Inter, Outfit } from "next/font/google";
+import { TestimonialsProvider } from "@/contexts/TestimonialsContext";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -28,7 +29,9 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${outfit.variable} font-sans antialiased`}
       >
-        <AuthProvider>{children}</AuthProvider>
+        <TestimonialsProvider>
+          <AuthProvider>{children}</AuthProvider>
+        </TestimonialsProvider>
       </body>
     </html>
   );
