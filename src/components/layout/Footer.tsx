@@ -48,8 +48,8 @@ export function Footer() {
               CVS GenAI Platform
             </h3>
             <p className="text-gray-400 text-sm">
-              Leveraging AI to create powerful, intuitive solutions for modern
-              challenges.
+              A project demonstrating the potential of Generative AI
+              through real-world inspired solutions.
             </p>
           </div>
 

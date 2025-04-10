@@ -83,17 +83,8 @@ const TestimonialsPage = () => {
               What Our Users Say
             </h1>
             <p className="text-gray-400 text-lg max-w-2xl mx-auto">
-              Discover how developers and businesses are leveraging our GenAI
-              Platform to build innovative solutions
+              GenAI in Action – Authentic Feedback from Real Users.
             </p>
-            <div className="mt-8">
-              <Link
-                href="/testimonials/add"
-                className="inline-flex items-center px-8 py-3 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-medium transition-all duration-200"
-              >
-                Share Your Experience
-              </Link>
-            </div>
           </div>
 
           {loading ? (
@@ -195,9 +186,8 @@ const TestimonialsPage = () => {
                     Share Your Experience
                   </h3>
                   <p className="text-gray-300 text-lg max-w-xl">
-                    Join hundreds of satisfied users who have transformed their
-                    AI development with GenAI Platform. Your feedback helps us
-                    improve.
+                    Join our community of satisfied users who truly love the
+                    GenAI Platform. Your feedback drives our innovation.
                   </p>
                 </div>
                 <Link

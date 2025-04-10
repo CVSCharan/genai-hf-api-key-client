@@ -123,3 +123,31 @@ export interface PaginatedResponse {
   currentPage: number;
   totalTestimonials: number;
 }
+
+export interface TestimonialsContextType {
+  // Shared state
+  apiUrl: string;
+
+  // For testimonials page (paginated)
+  testimonials: Testimonial[];
+  loading: boolean;
+  loadingMore: boolean;
+  error: string | null;
+  currentPage: number;
+  totalPages: number;
+
+  // For testimonial section (recent)
+  recentTestimonials: Testimonial[];
+  recentLoading: boolean;
+  recentError: string | null;
+
+  // Methods
+  fetchTestimonials: (page: number, limit: number) => Promise<void>;
+  loadMoreTestimonials: () => Promise<void>;
+  fetchRecentTestimonials: () => Promise<void>;
+  resetTestimonials: () => void;
+}
+
+export interface TestimonialsProviderProps {
+  children: ReactNode;
+}

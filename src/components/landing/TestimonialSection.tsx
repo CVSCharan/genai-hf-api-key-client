@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { useTestimonials } from "@/contexts/TestimonialsContext";
+import Link from "next/link";
 
 export const TestimonialSection = () => {
   // Use the shared context
@@ -100,8 +101,7 @@ export const TestimonialSection = () => {
             viewport={{ once: true }}
             className="text-base md:text-lg text-gray-400 max-w-2xl mx-auto"
           >
-            Discover how developers and businesses are leveraging our GenAI
-            Platform to build innovative solutions
+            GenAI in Action – Authentic Feedback from Real Users.
           </motion.p>
         </div>
 
@@ -284,6 +284,34 @@ export const TestimonialSection = () => {
                 </button>
               </div>
             )}
+
+            {/* View All Testimonials button */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="flex justify-center mt-12"
+            >
+              <Link
+                href="/testimonials"
+                className="inline-flex items-center px-8 py-3 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-medium transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-105 transform"
+              >
+                <span>View All Testimonials</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5 ml-2"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </Link>
+            </motion.div>
           </div>
         )}
       </div>
