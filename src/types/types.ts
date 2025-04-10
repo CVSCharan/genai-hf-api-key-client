@@ -151,3 +151,38 @@ export interface TestimonialsContextType {
 export interface TestimonialsProviderProps {
   children: ReactNode;
 }
+
+export type Message = {
+  role: "user" | "assistant";
+  content: string;
+};
+
+export type ModelOption = {
+  id: string;
+  name: string;
+  category: "creative" | "sentiment" | "conversation";
+  description: string;
+};
+
+export type DemoContextType = {
+  apiKey: string;
+  setApiKey: (key: string) => void;
+  isKeyValid: boolean;
+  selectedModel: string;
+  setSelectedModel: (model: string) => void;
+  messages: Message[];
+  inputMessage: string;
+  setInputMessage: (message: string) => void;
+  isLoading: boolean;
+  modelCategory: "creative" | "sentiment" | "conversation";
+  setModelCategory: (
+    category: "creative" | "sentiment" | "conversation"
+  ) => void;
+  modelOptions: ModelOption[];
+  filteredModels: ModelOption[];
+  validateApiKey: () => void;
+  handleSendMessage: () => Promise<void>;
+  handleKeyPress: (e: React.KeyboardEvent) => void;
+  handleClearChat: () => void;
+  messagesEndRef: React.RefObject<HTMLDivElement>;
+};
