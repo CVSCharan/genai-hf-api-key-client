@@ -15,7 +15,6 @@ export const DashboardMessageDisplay: React.FC<DashboardMessageProps> = ({
 
   // Custom renderer for code blocks
   const components = {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     code({ node, inline, className, children, ...props }: any) {
       const match = /language-(\w+)/.exec(className || "");
       return !inline && match ? (

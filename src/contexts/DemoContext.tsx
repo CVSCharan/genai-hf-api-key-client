@@ -334,7 +334,7 @@ export const DemoProvider: React.FC<{ children: ReactNode }> = ({
       setMessages((prev) =>
         prev.map((msg) =>
           msg.id === assistantMessageId
-            ? { ...msg, content: responseContent }
+            ? { ...msg, content: typeof responseContent === 'string' ? responseContent : JSON.stringify(responseContent) }
             : msg
         )
       );

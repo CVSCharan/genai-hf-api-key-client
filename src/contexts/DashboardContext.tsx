@@ -108,13 +108,13 @@ export const DashboardProvider: React.FC<{ children: ReactNode }> = ({
   );
 
   // Handle API key submission
-  const handleApiKeySubmit = (newApiKey: string) => {
-    const isValid = validateApiKey(newApiKey);
-    if (isValid) {
-      return true;
-    }
-    return false;
-  };
+  // const handleApiKeySubmit = (newApiKey: string) => {
+  //   const isValid = validateApiKey(newApiKey);
+  //   if (isValid) {
+  //     return true;
+  //   }
+  //   return false;
+  // };
 
   // Validate API key with option to pass a specific key
   const validateApiKey = (keyToValidate?: string) => {
@@ -215,7 +215,7 @@ export const DashboardProvider: React.FC<{ children: ReactNode }> = ({
       prev.map((chat) => {
         if (chat.id === chatId) {
           // Update chat title based on first user message if it's still "New Chat"
-          let updatedChat = { ...chat };
+          const updatedChat = { ...chat };
 
           if (chat.title === "New Chat" && message.role === "user") {
             // Use first 30 chars of first message as title
@@ -311,27 +311,27 @@ export const DashboardProvider: React.FC<{ children: ReactNode }> = ({
   };
 
   // Function to add a message to a chat session
-  const addMessageToChat = (
-    chatId: string,
-    message: Message,
-    isStreaming: boolean = false
-  ) => {
-    setChatSessions((prevSessions) =>
-      prevSessions.map((chat) => {
-        if (chat.id === chatId) {
-          // Use const instead of let
-          const updatedChat = {
-            ...chat,
-            messages: [...chat.messages, message],
-            // Lock model selection after the first message is sent
-            isModelLocked: chat.messages.length > 0 || isStreaming,
-          };
-          return updatedChat;
-        }
-        return chat;
-      })
-    );
-  };
+  // const addMessageToChat = (
+  //   chatId: string,
+  //   message: Message,
+  //   isStreaming: boolean = false
+  // ) => {
+  //   setChatSessions((prevSessions) =>
+  //     prevSessions.map((chat) => {
+  //       if (chat.id === chatId) {
+  //         // Use const instead of let
+  //         const updatedChat = {
+  //           ...chat,
+  //           messages: [...chat.messages, message],
+  //           // Lock model selection after the first message is sent
+  //           isModelLocked: chat.messages.length > 0 || isStreaming,
+  //         };
+  //         return updatedChat;
+  //       }
+  //       return chat;
+  //     })
+  //   );
+  // };
 
   // Validate API Key Effect
   useEffect(() => {
