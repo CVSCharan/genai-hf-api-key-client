@@ -40,34 +40,38 @@ export const MessageDisplay: React.FC<MessageDisplayProps> = ({
   }, [message.id, generatingMessageId]);
 
   // Helper function to determine if content is a sentiment result
-  const isSentimentResult = (content: any): content is SentimentResult => {
-    return (
+  const isSentimentResult = (content: unknown): content is SentimentResult => {
+    return Boolean(
       content &&
       typeof content === "object" &&
-      content.originalText &&
-      content.primarySentiment &&
-      content.allSentiments
+      // Use type assertion or check properties more safely
+      'originalText' in (content as object) &&
+      'primarySentiment' in (content as object) &&
+      'allSentiments' in (content as object)
     );
   };
 
   // Helper function to extract text from conversational response
-  const extractConversationalText = (content: any): string => {
+  const extractConversationalText = (content: unknown): string => {
     if (typeof content === "string") {
       return content;
     }
 
     // Handle the specific format from the server
     if (content && typeof content === "object") {
-      // If it's the raw API response with "response" field
-      if (content.response && typeof content.response === "string") {
-        return content.response;
+      // Type guard for response field
+      if ('response' in content && typeof (content as { response?: unknown }).response === 'string') {
+        return (content as { response: string }).response;
       }
 
-      // Check for nested conversation structure
-      if (content.conversation && content.conversation.generated_responses) {
-        const responses = content.conversation.generated_responses;
-        if (Array.isArray(responses) && responses.length > 0) {
-          return responses[responses.length - 1];
+      // Type guard for nested conversation structure
+      if ('conversation' in content && typeof (content as { conversation?: unknown }).conversation === 'object' && (content as { conversation?: unknown }).conversation) {
+        const conversation = (content as { conversation: { generated_responses?: unknown } }).conversation;
+        if ('generated_responses' in conversation && Array.isArray(conversation.generated_responses)) {
+           const responses = conversation.generated_responses;
+           if (responses.length > 0 && typeof responses[responses.length - 1] === 'string') {
+             return responses[responses.length - 1];
+           }
         }
       }
 

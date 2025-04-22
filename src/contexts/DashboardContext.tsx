@@ -301,18 +301,67 @@ export const DashboardProvider: React.FC<{ children: ReactNode }> = ({
 
   // Rename a chat
   const renameChat = (chatId: string, newTitle: string) => {
-    setChatSessions((prev) =>
-      prev.map((chat) => {
+    setChatSessions((prevSessions) =>
+      prevSessions.map((chat) =>
+        chat.id === chatId ? { ...chat, title: newTitle } : chat
+      )
+    );
+  };
+
+  // Function to add a message to a chat session
+  const addMessageToChat = (
+    chatId: string,
+    message: Message,
+    isStreaming: boolean = false
+  ) => {
+    setChatSessions((prevSessions) =>
+      prevSessions.map((chat) => {
         if (chat.id === chatId) {
-          return {
+          // Use const instead of let
+          const updatedChat = {
             ...chat,
-            title: newTitle,
+            messages: [...chat.messages, message],
+            // Lock model selection after the first message is sent
+            isModelLocked: chat.messages.length > 0 || isStreaming,
           };
+          return updatedChat;
         }
         return chat;
       })
     );
   };
+
+  // Validate API Key Effect
+  useEffect(() => {
+    if (apiKey) {
+      validateApiKey(apiKey);
+    } else {
+      setIsKeyValid(false); // Reset validity if key is removed
+    }
+    // Add validateApiKey to dependency array
+  }, [apiKey, validateApiKey]);
+
+  // Effect to set default model category and model when a new chat is created or selected
+  useEffect(() => {
+    const activeChat = getActiveChat();
+    if (activeChat && !activeChat.modelCategory) {
+      // Set a default category if none exists (e.g., the first category)
+      const defaultCategory = modelOptions[0]?.category;
+      if (defaultCategory) {
+        setModelCategory(activeChat.id, defaultCategory);
+      }
+    }
+    if (activeChat && activeChat.modelCategory && !activeChat.modelId) {
+      // Set a default model for the category if none exists
+      const defaultModel = modelOptions.find(
+        (m) => m.category === activeChat.modelCategory
+      )?.id;
+      if (defaultModel) {
+        setModel(activeChat.id, defaultModel);
+      }
+    }
+    // Remove modelOptions from dependency array as it's likely constant
+  }, [activeChatId, chatSessions, getActiveChat, setModelCategory, setModel]);
 
   // Context value
   const value = React.useMemo(

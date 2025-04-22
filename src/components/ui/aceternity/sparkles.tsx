@@ -26,8 +26,9 @@ export const SparklesCore = (props: SparklesCoreProps) => {
     });
   }, []);
 
-  const particlesLoaded = async (container?: Container): Promise<void> => {
+  const particlesLoaded = async (_container?: Container): Promise<void> => {
     // console.log("Container Loaded", container);
+    // Parameter is intentionally unused, prefixed with _ to satisfy ESLint
     return;
   };
 

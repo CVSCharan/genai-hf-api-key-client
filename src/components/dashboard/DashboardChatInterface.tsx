@@ -16,35 +16,36 @@ export const DashboardChatInterface: React.FC<DashboardChatInterfaceProps> = ({
   const [inputValue, setInputValue] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  
+
   // Add state for the loading animation
   const [loadingIndicator, setLoadingIndicator] = useState("⠋ Thinking...");
-  const [generatingMessageId, setGeneratingMessageId] = useState<string | null>(null);
+  // Remove unused state: const [generatingMessageId, setGeneratingMessageId] = useState<string | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (inputValue.trim() && isModelSelected) {
       onSendMessage(inputValue);
       setInputValue("");
-      
+
       // Reset textarea height
       if (textareaRef.current) {
         textareaRef.current.style.height = "auto";
       }
     }
   };
-  
+
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
-      handleSubmit(e);
+      // Pass the event object to handleSubmit or ensure it has access
+      handleSubmit(e as unknown as React.FormEvent); // Cast if necessary, ensure handleSubmit type matches
     }
   };
 
   // Auto-resize textarea as user types
   const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInputValue(e.target.value);
-    
+
     // Auto-resize
     const textarea = e.target;
     textarea.style.height = "auto";
@@ -53,7 +54,8 @@ export const DashboardChatInterface: React.FC<DashboardChatInterfaceProps> = ({
 
   // Set up the loading animation
   useEffect(() => {
-    if (isLoading && !generatingMessageId) {
+    // Update condition to only rely on isLoading
+    if (isLoading) {
       let loadingAnimationFrame = 0;
       const loadingAnimationFrames = [
         "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏",
@@ -67,8 +69,12 @@ export const DashboardChatInterface: React.FC<DashboardChatInterfaceProps> = ({
       }, 100);
 
       return () => clearInterval(loadingAnimation);
+    } else {
+      // Optionally reset indicator when not loading
+      setLoadingIndicator("⠋ Thinking...");
     }
-  }, [isLoading, generatingMessageId]);
+    // Remove generatingMessageId from dependencies
+  }, [isLoading]);
 
   // Scroll to bottom when messages change
   useEffect(() => {
@@ -94,12 +100,14 @@ export const DashboardChatInterface: React.FC<DashboardChatInterfaceProps> = ({
               <DashboardMessageDisplay
                 key={message.id}
                 message={message}
-                generatingMessageId={generatingMessageId}
-                modelCategory="conversation"
+                // Pass null or remove the prop if DashboardMessageDisplay handles it
+                generatingMessageId={null}
+                modelCategory="conversation" // Keep or adjust as needed
               />
             ))
           )}
-          {isLoading && !generatingMessageId && (
+          {/* Use isLoading directly for the general loading indicator */}
+          {isLoading && (
             <div className="flex justify-start">
               <div className="max-w-[80%] rounded-lg p-3 bg-gray-800/70 text-gray-200">
                 <div className="flex items-center">

@@ -1,57 +1,109 @@
+// Define interfaces for better type safety
+interface SentimentResult {
+  label: string;
+  score: number;
+}
+
+interface SentimentResponse {
+  type: "sentiment";
+  primarySentiment: {
+    label: string;
+    confidence: string;
+  };
+  allSentiments: {
+    label: string;
+    confidence: string;
+  }[];
+  interpretation: string;
+}
+
+// Define a type for the expected API response data structure
+// This is a basic structure, adjust if the API response varies more
+type ApiResponseData = {
+  result?: SentimentResult[][] | string | unknown; // Allow for different result types
+  data?: string | unknown; // Allow for different data types
+  // Add other potential top-level keys from the API response if known
+} | Record<string, unknown>; // Fallback for unexpected structures
+
 // Process response based on model category
 export const handleMessageResponse = (
-  data: any,
+  data: ApiResponseData, // Use the specific type for data
   category: string,
   inputMessage: string
-): string | any => {
-  let responseContent: any = "";
+): string | SentimentResponse => { // Use union type for return value
+  let responseContent: string | SentimentResponse = ""; // Use union type for the variable
 
   // Handle different response formats based on category
-  if (category === "sentiment" && Array.isArray(data.result)) {
+  // Check if data.result exists and is an array before accessing it
+  if (category === "sentiment" && data.result && Array.isArray(data.result)) {
     // Format sentiment analysis results into a readable string
-    const sentimentResults = data.result[0];
+    const sentimentResults = data.result[0]; // Assuming the structure is [[{label, score}, ...]]
     if (Array.isArray(sentimentResults)) {
-      // Sort results by score (highest first)
-      const sortedResults = [...sentimentResults].sort(
-        (a, b) => b.score - a.score
+      // Ensure items in sentimentResults are actual SentimentResult objects
+      const validSentimentResults = sentimentResults.filter(
+        (item): item is SentimentResult =>
+          typeof item === 'object' && item !== null && 'label' in item && 'score' in item
       );
 
-      // Create a structured response object for sentiment analysis
-      responseContent = {
-        type: "sentiment",
-        primarySentiment: {
-          label: sortedResults[0].label,
-          confidence: `${(sortedResults[0].score * 100).toFixed(2)}%`
-        },
-        allSentiments: sortedResults.map(result => ({
-          label: result.label,
-          confidence: `${(result.score * 100).toFixed(2)}%`
-        })),
-        interpretation: `The text you provided appears to have a predominantly ${sortedResults[0].label.toLowerCase()} sentiment.`
-      };
+      if (validSentimentResults.length > 0) {
+        // Sort results by score (highest first)
+        const sortedResults = [...validSentimentResults].sort(
+          (a, b) => b.score - a.score
+        );
+
+        // Create a structured response object for sentiment analysis
+        responseContent = {
+          type: "sentiment",
+          primarySentiment: {
+            label: sortedResults[0].label,
+            confidence: `${(sortedResults[0].score * 100).toFixed(2)}%`
+          },
+          allSentiments: sortedResults.map(result => ({
+            label: result.label,
+            confidence: `${(result.score * 100).toFixed(2)}%`
+          })),
+          interpretation: `The text you provided appears to have a predominantly ${sortedResults[0].label.toLowerCase()} sentiment.`
+        };
+      } else {
+        // Handle case where sentimentResults is an empty array or contains invalid items
+        responseContent = {
+          type: "sentiment",
+          primarySentiment: { label: "Unknown", confidence: "N/A" },
+          allSentiments: [],
+          interpretation: "Unable to parse sentiment results.",
+        };
+      }
     } else {
-      responseContent = {
-        type: "sentiment",
-        primarySentiment: {
-          label: "Unknown",
-          confidence: "N/A"
-        },
-        allSentiments: [],
-        interpretation: "Unable to parse sentiment results."
-      };
+      // Handle case where data.result[0] is not an array
+       responseContent = {
+         type: "sentiment",
+         primarySentiment: { label: "Unknown", confidence: "N/A" },
+         allSentiments: [],
+         interpretation: "Unexpected sentiment result format.",
+       };
     }
+  } else if (typeof data.result === 'string') {
+    // Handle string result
+    responseContent = data.result;
+  } else if (typeof data.data === 'string') {
+     // Handle string data
+    responseContent = data.data;
+  } else if (category === 'creative' && typeof (data as { generated_text?: string }).generated_text === 'string') {
+    // Handle creative response structure if it's different
+    responseContent = (data as { generated_text: string }).generated_text;
   } else {
-    // For other categories, use the standard response format
-    responseContent = data.result || data.data || "";
+    // Fallback if data structure is unexpected or empty for non-sentiment categories
+    responseContent = "";
   }
 
-  // Fallback to mock responses if the API doesn't return a response
+  // Fallback to mock responses if the API doesn't return a valid responseContent
+  // Check if responseContent is still empty or falsy (e.g., empty string)
   if (!responseContent) {
     if (category === "sentiment") {
       const sentiments = ["Positive", "Negative", "Neutral"];
       const randomSentiment = sentiments[Math.floor(Math.random() * sentiments.length)];
       const confidence = `${(Math.random() * 30 + 70).toFixed(2)}%`;
-      
+
       responseContent = {
         type: "sentiment",
         primarySentiment: {
@@ -71,7 +123,7 @@ export const handleMessageResponse = (
           ? inputMessage
           : "Once upon a time in a digital realm, AI and humans worked together to create amazing stories. Your journey begins now..."
       }\n\nFeel free to ask for more creative content or provide more specific prompts!`;
-    } else {
+    } else { // Assuming default is conversation or similar
       responseContent = `# Response\n\nI understand you're asking about "${inputMessage.substring(0, 30)}${
         inputMessage.length > 30 ? "..." : ""
       }".\n\nAs an AI assistant, I'm here to help with information and answers. What specific aspects would you like me to elaborate on?`;

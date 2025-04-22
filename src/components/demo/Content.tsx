@@ -92,9 +92,9 @@ const DemoContent: React.FC = () => {
               Demo Limit Reached
             </h2>
             <p className="text-gray-300 mb-6 text-center">
-              You've used {messageCount} out of 3 free demo messages. To
+              {`You've used ${messageCount} out of 3 free demo messages. To
               continue using the GenAI platform, please log in with your account
-              or create a new one.
+              or create a new one.`}
             </p>
             <div className="flex flex-col gap-3">
               <Link
