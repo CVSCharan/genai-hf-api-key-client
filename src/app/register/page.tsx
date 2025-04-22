@@ -7,7 +7,7 @@ import { SparklesCore } from "@/components/ui/aceternity/sparkles";
 import { Navbar } from "@/components/layout/Navbar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { FaGoogle, FaGithub } from "react-icons/fa";
+import { FaGithub } from "react-icons/fa";
 import { Separator } from "@/components/ui/separator";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import Link from "next/link";
@@ -137,185 +137,259 @@ const RegisterPage = () => {
         />
       </div>
 
-      <div className="container mx-auto px-6 relative z-10 flex-grow flex items-center justify-center">
+      <div className="container mx-auto px-6 relative z-10 flex-grow flex items-center justify-center pt-20">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="w-full max-w-md"
+          className="w-full max-w-2xl"
         >
           <div className="text-center mb-6">
             <h1 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 mb-2">
-              Create Account
+              GenAI Platform
             </h1>
             <p className="text-gray-400">
-              Sign up to get started with our API services
+              Create an account to access GenAI management dashboard
             </p>
           </div>
 
           <BackgroundGradient className="rounded-xl p-[1px]">
-            <div className="bg-gray-900 p-6 rounded-[10px]">
-              <div className="space-y-3 mb-4">
-                <Button
-                  className="cursor-pointer w-full bg-white hover:bg-gray-200 text-gray-900 font-medium flex items-center justify-center"
-                  onClick={() => handleOAuthRegister("Google")}
-                >
-                  <FaGoogle className="mr-2" />
-                  Sign up with Google
-                </Button>
-                <Button
-                  className="cursor-pointer w-full bg-gray-800 hover:bg-gray-700 text-white font-medium flex items-center justify-center"
-                  onClick={() => handleOAuthRegister("GitHub")}
-                >
-                  <FaGithub className="mr-2" />
-                  Sign up with GitHub
-                </Button>
-              </div>
-
-              <div className="relative my-4">
-                <Separator className="bg-gray-700" />
-                <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-900 px-2 text-sm text-gray-400">
-                  OR
-                </span>
-              </div>
-
-              <form onSubmit={handleRegister} className="space-y-3">
-                <div>
-                  <Input
-                    type="text"
-                    name="name"
-                    placeholder="Full Name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                    className="bg-gray-800 border-gray-700 text-white"
-                  />
-                </div>
-                <div>
-                  <Input
-                    type="email"
-                    name="email"
-                    placeholder="Email address"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    className="bg-gray-800 border-gray-700 text-white"
-                  />
-                </div>
-                <div className="relative">
-                  <Input
-                    type={showPassword ? "text" : "password"}
-                    name="password"
-                    placeholder="Password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    required
-                    className="bg-gray-800 border-gray-700 text-white"
-                  />
-                  {formData.password.length !== 0 && (
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="cursor-pointer absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-300"
+            <div className="bg-gray-900 p-8 rounded-[10px]">
+              <form onSubmit={handleRegister} className="space-y-4">
+                {/* Two inputs per row */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label
+                      htmlFor="name"
+                      className="block text-sm font-medium text-gray-300 mb-1"
                     >
-                      {showPassword ? (
+                      Full Name
+                    </label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          className="h-5 w-5"
+                          className="h-5 w-5 text-gray-500"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
                         >
                           <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"
+                            fillRule="evenodd"
+                            d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                            clipRule="evenodd"
                           />
                         </svg>
-                      ) : (
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          className="h-5 w-5"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                          />
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                          />
-                        </svg>
-                      )}
-                    </button>
-                  )}
-                </div>
-                <div className="relative">
-                  <Input
-                    type={showConfirmPassword ? "text" : "password"}
-                    name="confirmPassword"
-                    placeholder="Confirm Password"
-                    value={formData.confirmPassword}
-                    onChange={handleChange}
-                    required
-                    className="bg-gray-800 border-gray-700 text-white"
-                  />
-                  {formData.confirmPassword.length !== 0 && (
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setShowConfirmPassword(!showConfirmPassword)
-                      }
-                      className="cursor-pointer absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-300"
+                      </div>
+                      <Input
+                        id="name"
+                        type="text"
+                        name="name"
+                        placeholder="John Doe"
+                        value={formData.name}
+                        onChange={handleChange}
+                        required
+                        className="bg-gray-800 border-gray-700 text-white pl-10"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="email"
+                      className="block text-sm font-medium text-gray-300 mb-1"
                     >
-                      {showConfirmPassword ? (
+                      Email Address
+                    </label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          className="h-5 w-5"
+                          className="h-5 w-5 text-gray-500"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
                         >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"
-                          />
+                          <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                          <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
                         </svg>
-                      ) : (
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          className="h-5 w-5"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                          />
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                          />
-                        </svg>
-                      )}
-                    </button>
-                  )}
+                      </div>
+                      <Input
+                        id="email"
+                        type="email"
+                        name="email"
+                        placeholder="you@example.com"
+                        value={formData.email}
+                        onChange={handleChange}
+                        required
+                        className="bg-gray-800 border-gray-700 text-white pl-10"
+                      />
+                    </div>
+                  </div>
                 </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label
+                      htmlFor="password"
+                      className="block text-sm font-medium text-gray-300 mb-1"
+                    >
+                      Password
+                    </label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-5 w-5 text-gray-500"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </div>
+                      <Input
+                        id="password"
+                        type={showPassword ? "text" : "password"}
+                        name="password"
+                        placeholder="••••••••"
+                        value={formData.password}
+                        onChange={handleChange}
+                        required
+                        className="bg-gray-800 border-gray-700 text-white pl-10"
+                      />
+                      {formData.password.length !== 0 && (
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="cursor-pointer absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-300"
+                        >
+                          {showPassword ? (
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              className="h-5 w-5"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"
+                              />
+                            </svg>
+                          ) : (
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              className="h-5 w-5"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                              />
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                              />
+                            </svg>
+                          )}
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="confirmPassword"
+                      className="block text-sm font-medium text-gray-300 mb-1"
+                    >
+                      Confirm Password
+                    </label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-5 w-5 text-gray-500"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </div>
+                      <Input
+                        id="confirmPassword"
+                        type={showConfirmPassword ? "text" : "password"}
+                        name="confirmPassword"
+                        placeholder="••••••••"
+                        value={formData.confirmPassword}
+                        onChange={handleChange}
+                        required
+                        className="bg-gray-800 border-gray-700 text-white pl-10"
+                      />
+                      {formData.confirmPassword.length !== 0 && (
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setShowConfirmPassword(!showConfirmPassword)
+                          }
+                          className="cursor-pointer absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-300"
+                        >
+                          {showConfirmPassword ? (
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              className="h-5 w-5"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"
+                              />
+                            </svg>
+                          ) : (
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              className="h-5 w-5"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                              />
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                              />
+                            </svg>
+                          )}
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
                 <div className="flex items-center">
                   <input
                     id="terms"
@@ -346,6 +420,7 @@ const RegisterPage = () => {
                     </Link>
                   </label>
                 </div>
+
                 <Button
                   type="submit"
                   disabled={isLoading || !termsAccepted}
@@ -382,13 +457,12 @@ const RegisterPage = () => {
                   )}
                 </Button>
 
-                {/* Success and error messages moved to bottom */}
+                {/* Success and error messages */}
                 {successMessage && showAlert && (
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
-                    className="mt-3"
                   >
                     <Alert
                       autoClose={true}
@@ -422,7 +496,6 @@ const RegisterPage = () => {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
-                    className="mt-3"
                   >
                     <Alert
                       autoClose={true}
@@ -453,7 +526,48 @@ const RegisterPage = () => {
                 )}
               </form>
 
-              <div className="mt-4 text-center text-sm text-gray-400">
+              <div className="relative my-6">
+                <Separator className="bg-gray-700" />
+                <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-900 px-2 text-sm text-gray-400">
+                  OR CONTINUE WITH
+                </span>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <Button
+                  className="cursor-pointer bg-transparent border border-gray-700 hover:bg-gray-800 text-white font-medium flex items-center justify-center"
+                  onClick={() => handleOAuthRegister("Google")}
+                >
+                  <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
+                    <path
+                      d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                      fill="#4285F4"
+                    />
+                    <path
+                      d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                      fill="#34A853"
+                    />
+                    <path
+                      d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                      fill="#FBBC05"
+                    />
+                    <path
+                      d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                      fill="#EA4335"
+                    />
+                  </svg>
+                  Google
+                </Button>
+                <Button
+                  className="cursor-pointer bg-transparent border border-gray-700 hover:bg-gray-800 text-white font-medium flex items-center justify-center"
+                  onClick={() => handleOAuthRegister("GitHub")}
+                >
+                  <FaGithub className="mr-2" />
+                  GitHub
+                </Button>
+              </div>
+
+              <div className="mt-6 text-center text-sm text-gray-400">
                 Already have an account?{" "}
                 <Link
                   href="/login"

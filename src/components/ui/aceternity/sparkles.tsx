@@ -27,7 +27,8 @@ export const SparklesCore = (props: SparklesCoreProps) => {
   }, []);
 
   const particlesLoaded = async (container?: Container): Promise<void> => {
-    console.log("Container Loaded", container);
+    // console.log("Container Loaded", container);
+    return;
   };
 
   if (init) {

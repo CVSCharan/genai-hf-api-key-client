@@ -3,6 +3,9 @@ import "./globals.css";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { Inter, Outfit } from "next/font/google";
 import { TestimonialsProvider } from "@/contexts/TestimonialsContext";
+import { DemoProvider } from "@/contexts/DemoContext";
+import { ApiKeyModalProvider } from "@/contexts/ApiKeyModalContext";
+import { DashboardProvider } from "@/contexts/DashboardContext";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -29,9 +32,15 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${outfit.variable} font-sans antialiased`}
       >
-        <TestimonialsProvider>
-          <AuthProvider>{children}</AuthProvider>
-        </TestimonialsProvider>
+        <DashboardProvider>
+          <ApiKeyModalProvider>
+            <DemoProvider>
+              <TestimonialsProvider>
+                <AuthProvider>{children}</AuthProvider>
+              </TestimonialsProvider>
+            </DemoProvider>
+          </ApiKeyModalProvider>
+        </DashboardProvider>
       </body>
     </html>
   );

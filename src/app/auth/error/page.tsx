@@ -28,7 +28,7 @@ const AuthErrorContent = () => {
     if (error) {
       const decodedError = decodeURIComponent(error);
       setErrorMessage(decodedError);
-      
+
       // Update redirect path and button text based on error message
       const isNoAccountError = decodedError.includes("No account found");
       setRedirectPath(isNoAccountError ? "/register" : "/login");
@@ -40,7 +40,7 @@ const AuthErrorContent = () => {
   // Second effect: handle the countdown and redirect
   useEffect(() => {
     let timer: NodeJS.Timeout | null = null;
-    
+
     timer = setInterval(() => {
       setCountdown((prev) => {
         if (prev <= 1) {
@@ -54,7 +54,7 @@ const AuthErrorContent = () => {
         return prev - 1;
       });
     }, 1000);
-    
+
     return () => {
       if (timer) clearInterval(timer);
     };
@@ -102,7 +102,7 @@ const AuthErrorContent = () => {
           <div className="space-y-4">
             <Button
               onClick={handleButtonClick}
-              className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold py-3 px-6"
+              className="cursor-pointer bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold py-3 px-6"
             >
               {buttonText}
             </Button>

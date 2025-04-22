@@ -4,20 +4,30 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { SparklesCore } from "@/components/ui/aceternity/sparkles";
 import { TextGenerateEffect } from "@/components/ui/aceternity/text-generate-effect";
-import { Code } from "lucide-react";
-import { HeroSectionProps } from "@/types/types";
+import { Code, Sparkles } from "lucide-react";
 import { useRef } from "react";
 import Link from "next/link";
 import { ApiKeyDialog } from "../shared/ApiKeyDialog";
+import { useApiKeyModal } from "@/contexts/ApiKeyModalContext";
 
-export function HeroSection({
-  apiKey,
-  setApiKey,
-  isModalOpen,
-  setIsModalOpen,
-  handleSubmit,
-}: HeroSectionProps) {
+// In the HeroSection component
+export function HeroSection() {
   const heroRef = useRef<HTMLDivElement>(null);
+  const {
+    isModalOpen,
+    openModal,
+    closeModal,
+    apiKey,
+    setApiKey,
+    handleSubmit,
+    setSourceSection
+  } = useApiKeyModal();
+
+  // When the Try Now button is clicked
+  const handleOpenModal = () => {
+    setSourceSection("hero");
+    openModal();
+  };
 
   // Get scroll progress for this section
   const { scrollYProgress } = useScroll({
@@ -89,6 +99,7 @@ export function HeroSection({
           </div>
         </motion.div>
 
+        {/* Update the ApiKeyDialog part */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -99,10 +110,16 @@ export function HeroSection({
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <ApiKeyDialog
               isOpen={isModalOpen}
-              onOpenChange={setIsModalOpen}
+              onOpenChange={(open) => (open ? handleOpenModal() : closeModal())}
               apiKey={apiKey}
               setApiKey={setApiKey}
               handleSubmit={handleSubmit}
+              triggerButton={
+                <Button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold py-3 px-8 text-lg cursor-pointer">
+                  <Sparkles className="h-5 w-5 mr-2" />
+                  Try Now
+                </Button>
+              }
             />
             <Link href="/docs?section=source-code">
               <Button

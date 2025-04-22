@@ -152,22 +152,33 @@ export const TestimonialsProvider = ({
     setError(null);
   };
 
-  const value = {
-    apiUrl,
-    testimonials,
-    loading,
-    loadingMore,
-    error,
-    currentPage,
-    totalPages,
-    recentTestimonials,
-    recentLoading,
-    recentError,
-    fetchTestimonials,
-    loadMoreTestimonials,
-    fetchRecentTestimonials,
-    resetTestimonials,
-  };
+  const value = React.useMemo(
+    () => ({
+      apiUrl,
+      testimonials,
+      loading,
+      loadingMore,
+      error,
+      currentPage,
+      totalPages,
+      recentTestimonials,
+      recentLoading,
+      recentError,
+      fetchTestimonials,
+      loadMoreTestimonials,
+      fetchRecentTestimonials,
+      resetTestimonials,
+    }),
+    [
+      testimonials,
+      loadingMore,
+      currentPage,
+      totalPages,
+      recentTestimonials,
+      recentLoading,
+      recentError,
+    ]
+  );
 
   return (
     <TestimonialsContext.Provider value={value}>

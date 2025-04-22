@@ -6,7 +6,7 @@ export function Footer() {
   const pathname = usePathname();
 
   // Routes that should display the detailed footer
-  const detailedFooterRoutes = ["/", "/about", "/features", "/docs"];
+  const detailedFooterRoutes = ["/", "/about"];
   const showDetailedFooter = detailedFooterRoutes.includes(pathname);
 
   // Simple footer for other routes
@@ -18,6 +18,32 @@ export function Footer() {
             <div className="text-gray-500 text-xs sm:text-sm mb-2 sm:mb-0">
               © {new Date().getFullYear()} CVS GenAI Platform
             </div>
+
+            <div className="flex space-x-4">
+              <a
+                href="https://github.com/CVSCharan"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-white transition-colors"
+              >
+                <Github size={20} />
+              </a>
+              <a
+                href="https://www.linkedin.com/in/charan-cvs/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-white transition-colors"
+              >
+                <Linkedin size={20} />
+              </a>
+              <a
+                href="mailto:cvstechsolutions@gmail.com"
+                className="text-gray-400 hover:text-white transition-colors"
+              >
+                <Mail size={20} />
+              </a>
+            </div>
+
             <div className="text-xs text-gray-500 flex space-x-4">
               <Link
                 href="/privacy"
@@ -48,8 +74,8 @@ export function Footer() {
               CVS GenAI Platform
             </h3>
             <p className="text-gray-400 text-sm">
-              A project demonstrating the potential of Generative AI
-              through real-world inspired solutions.
+              A project demonstrating the potential of Generative AI through
+              real-world inspired solutions.
             </p>
           </div>
 
