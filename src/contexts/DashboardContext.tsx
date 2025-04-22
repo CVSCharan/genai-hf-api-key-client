@@ -24,9 +24,11 @@ export const DashboardProvider: React.FC<{ children: ReactNode }> = ({
   const [activeChatId, setActiveChatId] = useState<string | null>(null);
   const [apiKey, setApiKey] = useState<string>("");
   const [selectedModel, setSelectedModel] = useState<string>("");
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedModelCategory, setSelectedModelCategory] = useState<
     "creative" | "sentiment" | "conversation"
   >("conversation");
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isLoading, setIsLoading] = useState(false);
   const [isKeyValid, setIsKeyValid] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);

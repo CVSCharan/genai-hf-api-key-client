@@ -1,6 +1,6 @@
 import React from "react";
 import { Bot, User } from "lucide-react";
-import ReactMarkdown, { Components } from "react-markdown"; // Import Components type
+import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { atomDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { DashboardMessageProps } from "@/types/types";
@@ -8,27 +8,22 @@ import { DashboardMessageProps } from "@/types/types";
 export const DashboardMessageDisplay: React.FC<DashboardMessageProps> = ({
   message,
   generatingMessageId,
-  modelCategory: _modelCategory, // Prefix with underscore
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  modelCategory = "conversation",
 }) => {
   const isGenerating = message.id === generatingMessageId;
 
-  // Custom renderer for code blocks with specific type
-  const components: Components = {
-    // Define props inline instead of using CodeProps
-    code({ node: _node, inline, className, children, ...props }: {
-      node?: any; // Keep node optional or use a more specific type if needed later
-      inline?: boolean;
-      className?: string;
-      children?: React.ReactNode;
-      [key: string]: any; // Allow other props passed down
-    }) {
+  // Custom renderer for code blocks
+  const components = {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    code({ node, inline, className, children, ...props }: any) {
       const match = /language-(\w+)/.exec(className || "");
       return !inline && match ? (
         <SyntaxHighlighter
           style={atomDark}
           language={match[1]}
           PreTag="div"
-          {...props} // Pass down other props
+          {...props}
         >
           {String(children).replace(/\n$/, "")}
         </SyntaxHighlighter>
