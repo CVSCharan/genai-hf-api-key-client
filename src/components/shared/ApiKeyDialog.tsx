@@ -46,18 +46,18 @@ export function ApiKeyDialog({
             type="password"
             placeholder="Enter your Hugging Face API Key"
             value={apiKey}
-            onChange={(e) => setApiKey(e.target.value)}
+            onChange={(e) => setApiKey?.(e.target.value)}
             className="bg-gray-800 border-gray-700 text-white"
           />
           <Button
             type="submit"
-            className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold py-3"
+            className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold py-3 cursor-pointer"
           >
             Continue to GenAI Platform
           </Button>
           <div className="flex justify-center space-x-4 text-sm">
             <a
-              href="/docs?section=api-key-guide"
+              href="/docs?section=api-key"
               target="_blank"
               className="text-purple-400 hover:text-purple-300 transition-colors underline"
             >

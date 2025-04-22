@@ -25,9 +25,10 @@ export const SparklesCore = (props: SparklesCoreProps) => {
       setInit(true);
     });
   }, []);
-
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const particlesLoaded = async (container?: Container): Promise<void> => {
-    console.log("Container Loaded", container);
+    // console.log("Container Loaded", container);
+    return;
   };
 
   if (init) {

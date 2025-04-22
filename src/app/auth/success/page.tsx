@@ -8,22 +8,48 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { CheckCircle } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import Cookies from "js-cookie";
 
 // Client component that safely uses useSearchParams
-const AuthSuccessContent = () => {
+const AuthSuccessContent: React.FC = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [countdown, setCountdown] = useState(3);
-  const { login } = useAuth();
   const [redirectInitiated, setRedirectInitiated] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const { fetchUserProfile, setIsAuthenticated } = useAuth();
 
   // Use useCallback to memoize the redirect function
   const handleRedirect = useCallback(() => {
     if (!redirectInitiated) {
       setRedirectInitiated(true);
-      router.push("/dashboard");
+      setTimeout(() => {
+        router.push("/dashboard");
+      }, 0);
     }
   }, [router, redirectInitiated]);
+
+  // Function to start countdown timer
+  const startCountdown = useCallback(() => {
+    // Set initial countdown value
+    setCountdown(3);
+
+    // Create timer that decrements every second
+    const timer = setInterval(() => {
+      setCountdown((prev) => {
+        const newValue = prev - 1;
+        if (newValue <= 0) {
+          clearInterval(timer);
+          handleRedirect();
+          return 0;
+        }
+        return newValue;
+      });
+    }, 1000);
+
+    // Return cleanup function
+    return timer;
+  }, [handleRedirect]);
 
   useEffect(() => {
     // Only proceed if we haven't already initiated a redirect
@@ -31,144 +57,56 @@ const AuthSuccessContent = () => {
 
     // Get token from URL
     const token = searchParams.get("token");
-    console.log("Token from URL:", token);
+    // console.log("Token from URL:", token);
 
     let timer: NodeJS.Timeout | null = null;
 
-    // Check if we're in the browser and try to get from window.location if searchParams fails
-    if (typeof window !== "undefined" && !token) {
-      const urlParams = new URLSearchParams(window.location.search);
-      const tokenFromUrl = urlParams.get("token");
-      console.log("Token from window.location:", tokenFromUrl);
-
-      if (tokenFromUrl) {
-        // Try to decode the JWT to get user info
-        try {
-          const payload = JSON.parse(atob(tokenFromUrl.split(".")[1]));
-          const user = {
-            id: payload.id || payload.sub,
-            email: payload.email,
-            name: payload.name,
-            picture: payload.picture,
-          };
-
-          // Save to auth context
-          login(tokenFromUrl, user);
-
-          // Start countdown to redirect
-          timer = setInterval(() => {
-            setCountdown((prev) => {
-              if (prev <= 1) {
-                if (timer) clearInterval(timer);
-                handleRedirect();
-                return 0;
-              }
-              return prev - 1;
-            });
-          }, 1000);
-        } catch (error) {
-          console.error("Error parsing token:", error);
-          // Mock user for testing
-          const mockUser = {
-            id: "mock-id",
-            email: "user@example.com",
-            name: "Test User",
-          };
-          login(tokenFromUrl, mockUser);
-
-          timer = setInterval(() => {
-            setCountdown((prev) => {
-              if (prev <= 1) {
-                if (timer) clearInterval(timer);
-                handleRedirect();
-                return 0;
-              }
-              return prev - 1;
-            });
-          }, 1000);
-        }
-      } else {
-        // For development/testing - create mock data
-        console.log("No token found. Creating mock data for testing.");
-        const mockToken = "mock_token_for_testing";
-        const mockUser = {
-          id: "mock-id",
-          email: "user@example.com",
-          name: "Test User",
-        };
-        login(mockToken, mockUser);
-
-        timer = setInterval(() => {
-          setCountdown((prev) => {
-            if (prev <= 1) {
-              if (timer) clearInterval(timer);
-              handleRedirect();
-              return 0;
-            }
-            return prev - 1;
-          });
-        }, 1000);
-      }
-    } else if (token) {
-      // Try to decode the JWT to get user info
+    // Process the token if it exists
+    if (token) {
       try {
-        const payload = JSON.parse(atob(token.split(".")[1]));
-        const user = {
-          id: payload.id || payload.sub,
-          email: payload.email,
-          name: payload.name,
-          picture: payload.picture,
-        };
+        // Store the token in cookies first to ensure it's available after refresh
+        Cookies.set("genai_user_token", token, {
+          expires: 1, // 1 day
+          sameSite: "Strict",
+        });
 
-        // Save to auth context
-        login(token, user);
-
-        // Start countdown to redirect
-        timer = setInterval(() => {
-          setCountdown((prev) => {
-            if (prev <= 1) {
-              if (timer) clearInterval(timer);
-              handleRedirect();
-              return 0;
-            }
-            return prev - 1;
+        // Use the fetchUserProfile function from AuthContext
+        fetchUserProfile(token)
+          .then(() => {
+            // Set authenticated state
+            setIsAuthenticated(true);
+            // Start countdown after successful authentication
+            timer = startCountdown();
+          })
+          .catch((err) => {
+            console.error("Error fetching user profile:", err);
+            setError("Failed to authenticate. Please try again.");
+            // Redirect to login after a short delay
+            setTimeout(() => {
+              router.push("/login");
+            }, 2000);
           });
-        }, 1000);
       } catch (error) {
-        console.error("Error parsing token:", error);
-        // Mock user for testing
-        const mockUser = {
-          id: "mock-id",
-          email: "user@example.com",
-          name: "Test User",
-        };
-        login(token, mockUser);
-
-        timer = setInterval(() => {
-          setCountdown((prev) => {
-            if (prev <= 1) {
-              if (timer) clearInterval(timer);
-              handleRedirect();
-              return 0;
-            }
-            return prev - 1;
-          });
-        }, 1000);
+        console.error("Error processing token:", error);
+        setError("Authentication failed. Please try again.");
+        // Redirect to login after a short delay
+        setTimeout(() => {
+          router.push("/login");
+        }, 2000);
       }
     } else {
-      // No token found, redirect to login after a short delay
-      console.error("No token found in URL");
-      setTimeout(() => {
-        router.push("/login");
-      }, 2000);
+      // No token found, redirect to login
+      console.warn("No token found, redirecting to login");
+      router.push("/login");
     }
 
     // Cleanup function
     return () => {
       if (timer) clearInterval(timer);
     };
-  }, [searchParams, login, handleRedirect, redirectInitiated]);
+  }, [searchParams, handleRedirect, redirectInitiated, router, startCountdown]);
 
+  // Rest of the component remains the same
   return (
     <div className="flex flex-col min-h-screen bg-black text-white">
       <Navbar />
@@ -193,18 +131,46 @@ const AuthSuccessContent = () => {
           transition={{ duration: 0.5 }}
           className="text-center"
         >
-          <div className="flex justify-center mb-6">
-            <CheckCircle className="h-24 w-24 text-green-500" />
-          </div>
-          <h1 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 mb-4">
-            Authentication Successful!
-          </h1>
-          <p className="text-xl text-gray-300 mb-2">
-            You have been successfully authenticated.
-          </p>
-          <p className="text-gray-400">
-            Redirecting to dashboard in {countdown} seconds...
-          </p>
+          {error ? (
+            <>
+              <div className="flex justify-center mb-6">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="h-24 w-24 text-red-500"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="15" y1="9" x2="9" y2="15" />
+                  <line x1="9" y1="9" x2="15" y2="15" />
+                </svg>
+              </div>
+              <h1 className="text-4xl font-bold text-red-500 mb-4">
+                Authentication Failed
+              </h1>
+              <p className="text-xl text-gray-300 mb-2">{error}</p>
+              <p className="text-gray-400">Redirecting to login page...</p>
+            </>
+          ) : (
+            <>
+              <div className="flex justify-center mb-6">
+                <CheckCircle className="h-24 w-24 text-green-500" />
+              </div>
+              <h1 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 mb-4">
+                Authentication Successful!
+              </h1>
+              <p className="text-xl text-gray-300 mb-2">
+                You have been successfully authenticated.
+              </p>
+              <p className="text-gray-400">
+                Redirecting to dashboard in {countdown} seconds...
+              </p>
+            </>
+          )}
         </motion.div>
       </div>
 
@@ -232,7 +198,7 @@ const LoadingFallback = () => {
 const AuthSuccessPage = () => {
   return (
     <Suspense fallback={<LoadingFallback />}>
-      <AuthSuccessContent />;
+      <AuthSuccessContent />
     </Suspense>
   );
 };
